@@ -295,8 +295,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 @media (min-width:860px){.grid{grid-template-columns:repeat(3,1fr)}}
 .mcard{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;min-height:210px;padding:14px 14px 12px;border:0;background:var(--dark) center/cover no-repeat;color:#fff;text-align:left;cursor:pointer;isolation:isolate;overflow:hidden}
 .mcard::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,27,25,.1) 0%,rgba(30,27,25,.45) 45%,rgba(30,27,25,.92) 100%);z-index:-1}
-.mcard .num{position:absolute;right:12px;top:8px;font-family:var(--serif);font-style:italic;font-size:46px;line-height:1;color:var(--soft-on-dark);opacity:.95}
-.mcard .name{font-family:var(--serif);font-weight:700;font-size:16.5px;line-height:1.25;color:#fff;text-wrap:balance}
+.mcard .num{position:absolute;right:12px;top:8px;font-family:var(--serif);font-style:italic;font-size:40px;line-height:1;color:var(--soft-on-dark);opacity:.95}
+.mcard .name{font-family:var(--serif);font-weight:700;font-size:15.5px;line-height:1.25;color:#fff;text-wrap:balance;padding-right:4px}
 .mcard .desc{font-size:11.5px;line-height:1.35;color:#fff;opacity:.82}
 .mcard .bar{height:3px;background:rgba(255,255,255,.25);margin-top:8px}
 .mcard .bar i{background:#fff}
@@ -525,7 +525,7 @@ function screenHome(){
   const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const L=flat(); const cur=curStep(); const curMod=modules()[cur.mod];
   const days=tf.days+(S.idle?14:0); const total=L.filter(x=>!x.na).length;
   let html=`
-  <div class="welcome" ${bg('a')}><span class="badge" style="color:var(--soft-on-dark)">${tf.name} · ${t.name}</span><div class="hi">Добро пожаловать, <em>${S.name}</em></div><div class="sub">${t.from}</div></div>
+  <div class="welcome" ${bg('a')}><span class="badge" style="color:var(--soft-on-dark)">${tf.name}</span><div class="hi">Добро пожаловать, <em>${S.name}</em></div><div class="sub">${t.from}</div></div>
   <div class="duo">
     <div class="mini"><span class="k">Доступ к курсу</span><span class="v">${days}<small>${plural(days,'день','дня','дней')}</small></span><span class="a">до ${dateStr(days)}</span></div>
     <button class="mini" data-open-step="${cur.mod}:${cur.j}"><span class="k">Ты остановилась</span><span class="t">${cur.t}</span><span class="a">продолжить ${ico('arrow','sm')}</span></button>
