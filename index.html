@@ -141,6 +141,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .tile.locked,.tile.na{filter:saturate(.3)}
 .tile.locked .tname,.tile.na .tname{opacity:.75}
 @media (min-width:860px){.tiles{grid-template-columns:repeat(4,1fr)}.tile{min-height:190px}}
+/* services */
+.sgroup{display:flex;flex-direction:column;gap:12px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scard{display:flex;flex-direction:column;gap:4px;padding:16px 16px 12px;background:var(--paper);border:1px solid var(--hair);text-decoration:none;color:inherit;min-height:118px}
+.scard:hover{border-color:var(--bordo)}
+.scard .sname{font-family:var(--serif);font-size:16px;color:var(--ink);line-height:1.3}
+.scard .ssub{font-size:12.5px;color:var(--soft);line-height:1.4;flex:1}
+.scard .sfoot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.scard .smeta{font-family:var(--meta);font-style:italic;font-size:11.5px;color:var(--soft)}
+.scard .sgo{color:var(--bordo);display:inline-flex}
+.scard .sgo .ico{width:20px;height:20px}
+@media (min-width:860px){.sgrid{grid-template-columns:repeat(3,1fr)}}
 /* lesson pager */
 .pager{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .pbtn{display:flex;flex-direction:column;gap:3px;text-align:left;padding:14px 16px;border:1px solid var(--hair);background:var(--paper);cursor:pointer}
@@ -608,9 +620,17 @@ function screenFiles(){
 }
 
 function screenServices(){
-  const srv=[['VPN','для Claude и Instagram','партнёрская'],['Виртуальная карта','оплата Claude из России','партнёрская'],['Номер для регистрации','одноразовый номер','партнёрская'],['Конструктор бота','один сервис для воронки','модуль 9'],['Продамус','приём оплат','партнёрская · модуль 9'],['Рассрочка для клиентов','если продаёшь дороже 10.000 ₽','партнёрская · модуль 9'],['ИП за 10 минут','если продаёшь','партнёрская · модуль 7'],['Kinescope','если будешь делать свой курс','партнёрская']];
-  return `<div class="band" ${bg('n')}><span class="big">00</span><div class="kicker"><span class="badge">Можно смотреть всегда</span></div><h1>Сервисы</h1><p>Ссылки на всё, что понадобится по ходу. Заданий здесь нет. Часть ссылок партнёрские: для тебя цена та же.</p></div>
-  <div class="list">${srv.map(s=>`<div class="item"><span><div class="t">${s[0]}</div><div class="s">${s[1]}</div></span><span class="st">${s[2]}</span></div>`).join('')}</div>`;
+  const groups=[
+    ['Чтобы Claude работал',[['VPN','для Claude и Instagram',''],['Виртуальная карта','оплата Claude из России',''],['Номер для регистрации','одноразовый номер','']]],
+    ['Чтобы продавать',[['Конструктор бота','один сервис для воронки','модуль 9'],['Продамус','приём оплат','модуль 9'],['Рассрочка','для клиентов, если продаёшь дороже 10.000 ₽','модуль 9'],['ИП за 10 минут','если продаёшь официально','модуль 7']]],
+    ['Если будешь делать свой курс',[['Kinescope','видео с защитой от скачивания','']]]
+  ];
+  let html=`<div class="band" ${bg('n')}><span class="big">00</span><div class="kicker"><span class="badge">Можно смотреть всегда</span></div><h1>Сервисы</h1><p>Ссылки на всё, что понадобится по ходу. Заданий здесь нет.</p></div>`;
+  for(const [g,items] of groups){
+    html+=`<div class="sgroup"><div class="divider">${g}</div><div class="sgrid">${items.map(x=>`<a class="scard" href="#"><span class="sname">${x[0]}</span><span class="ssub">${x[1]}</span><span class="sfoot"><span class="smeta">${x[2]?'понадобится в '+x[2].replace('модуль','модуле'):'с первого дня'}</span><span class="sgo">${ico('arrow')}</span></span></a>`).join('')}</div></div>`;
+  }
+  html+=`<div class="meta">Часть ссылок партнёрские. Для тебя цена такая же.</div>`;
+  return html;
 }
 
 function screenProfile(){
