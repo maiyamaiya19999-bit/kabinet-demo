@@ -68,7 +68,7 @@ button{font:inherit;color:inherit}
 .app{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr}
 .rail{display:none}
 .main{display:flex;flex-direction:column;min-height:720px}
-.content{padding:24px 0 34px;display:flex;flex-direction:column;gap:34px;flex:1}
+.content{padding:22px 0 32px;display:flex;flex-direction:column;gap:26px;flex:1}
 .tabs{position:sticky;bottom:0;background:linear-gradient(120deg,#FCFAF6 0%,#F7F2EA 55%,#F2EBE1 100%);border-top:1px solid var(--hair);display:flex;padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));margin:0 -18px;overflow:hidden;isolation:isolate}
 .tabs::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.3;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.33 0 0 0 0 0.27 0 0 0 1 0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0.25 0.55 0.9'/></feComponentTransfer></filter><rect width='160' height='160' filter='url(%23g)'/></svg>");background-size:96px 96px}
 .tabs > *{position:relative;z-index:1}
@@ -126,6 +126,30 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .line{height:2px;background:var(--hair);position:relative}
 .line i{position:absolute;left:0;top:0;bottom:0;background:var(--bordo)}
 
+/* stage tiles on home */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{position:relative;min-height:150px;padding:14px 14px;border:0;background:var(--dark) center/cover no-repeat;color:#fff;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate;overflow:hidden}
+.tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,27,25,.15) 0%,rgba(30,27,25,.55) 45%,rgba(30,27,25,.92) 100%);z-index:-1}
+.tile .tnum{position:absolute;right:12px;top:8px;font-family:var(--serif);font-style:italic;font-size:44px;line-height:1;color:var(--soft-on-dark);opacity:.9}
+.tile .tbody{display:flex;flex-direction:column;gap:3px}
+.tile .tname{font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.2;color:#fff}
+.tile .tsub{font-size:11.5px;line-height:1.35;color:#fff;opacity:.85}
+.tile .tst{font-family:var(--meta);font-style:italic;font-size:12px;color:var(--soft-on-dark);margin-top:4px;display:inline-flex;align-items:center;gap:4px}
+.tile .tst .ico,.tile .tst .micon{width:15px;height:15px;margin:0}
+.tile.now{outline:2px solid var(--milk);outline-offset:-6px}
+.tile.now .tst,.tile.done .tst,.tile.open .tst{color:#CFE3D3}
+.tile.locked,.tile.na{filter:saturate(.3)}
+.tile.locked .tname,.tile.na .tname{opacity:.75}
+@media (min-width:860px){.tiles{grid-template-columns:repeat(4,1fr)}.tile{min-height:190px}}
+/* lesson pager */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.pbtn{display:flex;flex-direction:column;gap:3px;text-align:left;padding:14px 16px;border:1px solid var(--hair);background:var(--paper);cursor:pointer}
+.pbtn.right{text-align:right;align-items:flex-end;border-color:var(--bordo)}
+.pbtn .pk{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bordo);font-weight:600}
+.pbtn .pt{font-family:var(--serif);font-size:13.5px;color:var(--ink);line-height:1.35}
+.lnav{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.lesson .d .chip{margin:0}
+.lesson .d .ico{vertical-align:-3px}
 /* route */
 .route{display:flex;flex-direction:column;gap:0}
 .step{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;padding:17px 0;background:none;border:0;border-bottom:1px solid var(--hair);text-align:left;width:100%;cursor:pointer}
@@ -451,104 +475,114 @@ function screenAnketa(){
   <div><button class="btn" data-go="home">Сохранить и открыть кабинет</button></div>`;
 }
 
+const STAGES=['База','Рост','Доход','Финал'];
+function stageOf(n){ return MODULES[n].stage; }
+function modulesOf(st){ return order().filter(n=>MODULES[n].stage===st); }
+function stageState(st){
+  const ms=modulesOf(st).filter(n=>!MODULES[n].ref);
+  if(ms.every(n=>!inTariff(n))) return ['na','в тарифе выше'];
+  const nm=nextModule();
+  if(ms.includes(nm)) return ['now','ты здесь'];
+  if(ms.every(n=>isDone(n))) return ['done','сделано'];
+  if(ms.some(n=>isOpen(n))) return ['open','можно смотреть'];
+  return ['locked','пока закрыто'];
+}
+function nextLessonIndex(n){ const m=MODULES[n]; const i=m.lessons.findIndex(l=>l.hw&&!has(l.hw)); return S.module===n ? S.lesson : 0; }
+function systemPct(){
+  const keys=['unpack','ca','product','offer','selling'].filter(k=>k==='unpack'||k==='ca'||inTariff(7));
+  const done=keys.filter(has).length; return Math.round(done/keys.length*100);
+}
+
 function screenHome(){
   const t=TRACKS[S.track], tf=TARIFFS[S.tariff];
-  const nm=nextModule(), next=MODULES[nm];
-  const total=tf.modules.filter(n=>!MODULES[n].ref).length, done=tf.modules.filter(isDone).length;
-  const week=Math.min(tf.weeks, Math.max(1, done+1));
+  const nm=nextModule(), next=MODULES[nm]; const li=nextLessonIndex(nm); const l=next.lessons[li]||next.lessons[0];
+  const vids=next.lessons.filter(x=>x.d).length;
   let html=`
   <div class="band tall" ${bg(MOD_IMG[next.n]||STAGE_IMG[next.stage])}><span class="big">${pad(next.n)}</span>
-    <div class="kicker"><span class="badge">Твой следующий шаг</span><span class="meta">${tf.name} · ${t.name}</span></div>
-    <h1>${next.t}</h1><p>${next.s}.</p>
-    <button class="btn" data-open-module="${next.n}">Продолжить</button>
+    <div class="kicker"><span class="badge">Твой следующий шаг</span></div>
+    <h1>${l.t}</h1><p>Модуль ${next.n}. ${next.t} · урок ${li+1} из ${next.lessons.length}</p>
+    <button class="btn" data-open-direct="${next.n}:${li}">${ico('play')} Смотреть урок${l.d?' · '+l.d:''}</button>
   </div>
 
-  <div class="wash-section">
-    <div class="stats peach">
-      <div class="stat"><span class="v">${done}<span style="font-size:13px;color:var(--soft)"> / ${total}</span></span><span class="l">${ico('layers','sm')} модулей</span></div>
-      <div class="stat"><span class="v">${week}<span style="font-size:13px;color:var(--soft)"> / ${tf.weeks}</span></span><span class="l">${ico('clock','sm')} неделя</span></div>
-      <div class="stat"><span class="v" style="font-size:16px;padding-top:4px">${dateStr(tf.days+(S.idle?14:0))}</span><span class="l">${ico('unlock','sm')} доступ до</span></div>
-    </div>
-    <div class="from"><span class="hand">Майя</span><p>${t.from}</p></div>
+  <div>
+    <div class="row" style="margin-bottom:8px"><span class="meta">Твоя система собрана на ${systemPct()}%</span><span class="meta">доступ до ${dateStr(tf.days+(S.idle?14:0))}</span></div>
+    <div class="line"><i style="width:${systemPct()}%"></i></div>
   </div>
 
-  <div class="how"><span class="badge">Как здесь всё работает</span><div class="how-steps"><span>${ico('play')}<span><b>1. Смотришь урок</b>10–15 минут</span></span><span>${ico('spark')}<span><b>2. Повторяешь в Claude</b>то же самое, что на экране</span></span><span>${ico('pen')}<span><b>3. Загружаешь результат</b>в задании к уроку</span></span><span>${ico('unlock')}<span><b>4. Открывается следующий модуль</b>сразу, без проверки</span></span></div></div>
+  <div class="tiles">`;
+  STAGES.forEach((st,i)=>{
+    const [cls,txt]=stageState(st); const ms=modulesOf(st).filter(n=>!MODULES[n].ref);
+    const done=ms.filter(isDone).length;
+    html+=`<button class="tile ${cls}" ${bg(STAGE_IMG[st])} data-open-stage="${st}"><span class="tnum">${i+1}</span><span class="tbody"><span class="tname">${st}</span><span class="tsub">${STAGE_SUB[st]}</span><span class="tst">${cls==='done'?ico('check'):cls==='now'?ico('check'):cls==='open'?ico('check'):micon('close')}${txt}${ms.length?` · ${done}/${ms.length}`:''}</span></span></button>`;
+  });
+  html+=`</div>
+  <div class="from"><span class="hand">Майя</span><p>${t.from}</p></div>`;
+  return html;
+}
 
-  <div class="divider">Твой маршрут</div>
+function screenStage(){
+  const st=S.stage||'База'; const nm=nextModule(); const idx=STAGES.indexOf(st);
+  let html=`<div class="band" ${bg(STAGE_IMG[st])}><span class="big">${idx+1}</span><div class="kicker"><span class="badge">Этап ${idx+1} из 4</span></div><h1>${st}</h1><p>${STAGE_SUB[st]}.</p></div>
   <div class="route">`;
-  const stages={}; order().forEach(n=>{ const m=MODULES[n]; (stages[m.stage]=stages[m.stage]||[]).push(m); });
-  const st={'База':'Этап первый','Рост':'Этап второй','Доход':'Этап третий','Финал':'Завершение'};
-  for(const s of ['База','Рост','Доход','Финал']){
-    if(!stages[s]) continue;
-    const allNa=stages[s].every(m=>!inTariff(m.n));
-    const sn={'База':'1','Рост':'2','Доход':'3','Финал':'4'}[s];
-    html+=`<div class="stageband" ${bg(STAGE_IMG[s])}><span class="big">${sn}</span><span class="k">${allNa?'в тарифе Рост и доход':'этап'}</span><h2>${s}</h2><span class="s">${STAGE_SUB[s]}</span></div>`;
-    for(const m of stages[s]){
-      let cls='step', stt='', sub=m.s;
-      if(!inTariff(m.n)){cls+=' na'; stt=micon('close')+'в тарифе выше';}
-      else if(m.ref){stt=ico('check')+'можно смотреть';}
-      else if(isDone(m.n)){cls+=' done'; stt=ico('check')+'сделано';}
-      else if(m.n===nm){cls+=' now'; stt=ico('check')+'ты здесь';}
-      else if(isOpen(m.n)){stt=ico('check')+'можно смотреть';}
-      else {cls+=' locked'; stt=micon('close')+'пока закрыт'; sub=whyLocked(m.n);}
-      const vids=m.lessons.filter(l=>l.d&&!/промпт|гайд/.test(l.d)).length, mins=m.lessons.reduce((a,l)=>a+(parseInt(l.d)||0),0);
-      const cnt = m.ref ? '' : ` · ${vids} видео, ${mins} мин`;
-      html+=`<button class="${cls}" data-open-module="${m.n}"><span class="n">${pad(m.n)}</span><span><div class="t">${m.t}</div><div class="s">${sub}${(inTariff(m.n)&&isOpen(m.n))?cnt:''}</div></span><span class="st">${stt}</span></button>`;
-    }
+  for(const n of modulesOf(st)){
+    const m=MODULES[n]; let cls='step', stt='', sub=m.s;
+    if(!inTariff(n)){cls+=' na'; stt=micon('close')+'в тарифе выше';}
+    else if(m.ref){stt=ico('check')+'можно смотреть';}
+    else if(isDone(n)){cls+=' done'; stt=ico('check')+'сделано';}
+    else if(n===nm){cls+=' now'; stt=ico('check')+'ты здесь';}
+    else if(isOpen(n)){stt=ico('check')+'можно смотреть';}
+    else {cls+=' locked'; stt=micon('close')+'пока закрыт'; sub=whyLocked(n);}
+    const vids=m.lessons.filter(l=>l.d).length;
+    html+=`<button class="${cls}" data-open-module="${n}"><span class="n">${pad(n)}</span><span><div class="t">${m.t}</div><div class="s">${sub}${(inTariff(n)&&isOpen(n)&&vids)?` · ${vids} ${vids===1?'урок':vids<5?'урока':'уроков'}`:''}</div></span><span class="st">${stt}</span></button>`;
   }
   html+=`</div>
-  <div class="note">Следующие модули открывают пять заданий: распаковка, аудитория, что продаёшь, оффер, план бесплатного урока. Если 14 дней ничего не сдаёшь, всё откроется само, а доступ продлится на 2 недели. За 3 дня напомним.</div>`;
-  if(S.tariff!=='vip') html+=`<div><button class="btn quiet" data-offer="1">Показать предложение о тарифе выше (демо)</button></div>`;
-  else html+=`<div class="card"><span class="badge">VIP</span><div>Созвон с Майей каждый понедельник, шесть недель. Парсер подключён. Все модули открыты сразу, порядок подскажет Майя.</div></div>`;
+  <div class="row"><button class="btn quiet" data-screen="home">← Главная</button><span style="display:flex;gap:8px">${idx>0?`<button class="btn quiet" data-open-stage="${STAGES[idx-1]}">← ${STAGES[idx-1]}</button>`:''}${idx<3?`<button class="btn quiet" data-open-stage="${STAGES[idx+1]}">${STAGES[idx+1]} →</button>`:''}</span></div>`;
   return html;
 }
 
 function screenModule(){
-  const m=MODULES[S.module]; const t=TRACKS[S.track], tf=TARIFFS[S.tariff];
+  const m=MODULES[S.module]; const tf=TARIFFS[S.tariff];
   if(m.ref) return screenServices();
-  const vids=m.lessons.filter(l=>l.d&&!/промпт|гайд/.test(l.d)).length, hws=m.lessons.filter(l=>l.hw||l.file).length, mins=m.lessons.reduce((a,l)=>a+(parseInt(l.d)||0),0);
-  let html=`<div class="band" ${bg(MOD_IMG[m.n]||STAGE_IMG[m.stage])}><span class="big">${pad(m.n)}</span><div class="kicker"><span class="badge">${m.stage}</span><span class="meta">${vids} видео · ${mins} мин · ${hws} ${hws===1?'домашка':'домашки'}</span></div><h1>${m.t}</h1><p>${m.s}.</p></div>`;
+  const vids=m.lessons.filter(l=>l.d).length, mins=m.lessons.reduce((a,l)=>a+(parseInt(l.d)||0),0);
+  const ord=order().filter(n=>!MODULES[n].ref); const pos=ord.indexOf(m.n);
+  let html=`<div class="band" ${bg(MOD_IMG[m.n]||STAGE_IMG[m.stage])}><span class="big">${pad(m.n)}</span><div class="kicker"><span class="badge">${m.stage}</span><span class="meta">${vids} ${vids===1?'урок':vids<5?'урока':'уроков'} · ${mins} мин</span></div><h1>${m.t}</h1><p>${m.s}.</p></div>`;
   if(!inTariff(m.n)){
-    html+=`<div class="card key"><span class="badge">Этого модуля нет в твоём тарифе</span><h3>Он есть в тарифе <em>Рост и доход</em></h3><div>Там четыре модуля о том, как блог приносит деньги: что продавать, бесплатный урок, бот, посты к покупке. Доплата 2.000 ₽, в любой момент.</div><div><button class="btn">Доплатить 2.000 ₽</button></div></div>`;
-    return html;
+    html+=`<div class="card key"><span class="badge">Этого модуля нет в твоём тарифе</span><h3>Он есть в тарифе <em>Рост и доход</em></h3><div>${m.result}.</div><div><button class="btn">Доплатить 2.000 ₽</button></div></div>`;
+  } else if(!isOpen(m.n)){
+    html+=`<div class="card key"><span class="badge">${ico('lock','sm')} Пока закрыт</span><h3>Что сделать, чтобы открыть</h3><div>${whyLocked(m.n).replace(/^откроется, когда сдашь/,'Сдай')}.</div><div><button class="btn ghost" data-open-module="${nextModule()}">Перейти туда, где ты сейчас</button></div></div>`;
+  } else {
+    html+=`<div class="card wash"><span class="badge">Что получишь в конце модуля</span><h3>${m.result}</h3></div>`;
   }
-  if(!isOpen(m.n)) html+=`<div class="card key"><span class="badge">${ico('lock','sm')} Пока закрыт</span><h3>Что сделать, чтобы открыть</h3><div>${whyLocked(m.n).replace(/^откроется, когда сдашь/,'Сдай')}. Модули идут по порядку, чтобы система собралась правильно.</div><div><button class="btn ghost" data-open-module="${nextModule()}">Перейти туда, где ты сейчас</button></div></div>`;
-  html+=`<div class="card wash"><span class="badge">Что получишь в конце модуля</span><h3>${m.result}</h3></div>
-  <div class="divider">Уроки по порядку</div><div class="lessons">`;
+  html+=`<div class="lessons">`;
   m.lessons.forEach((l,i)=>{
-    const done=l.hw&&has(l.hw);
-    const isHW=!!(l.hw||l.file), isVideo=!!l.d&&!/промпт|гайд/.test(l.d);
-    const kind = isHW ? `<span class="kind hw">${ico('pen')}Задание: загрузи файл</span>` : isVideo ? `<span class="kind video">${ico('play')}Видео · ${l.d}</span>` : `<span class="kind">${ico(/гайд/.test(l.d||'')?'file':'spark')}${l.d}</span>`;
-    const mats=(l.mats||[]).map(x=>`<span class="matchip">${ico(x.ic==='Промпт'?'spark':x.ic==='Чек'?'check':x.ic==='Презент.'?'layers':'file','sm')}${x.ic==='PDF'?'PDF конспект':x.ic==='Чек'?'чек-лист':x.ic==='Презент.'?'презентация':x.ic.toLowerCase()}</span>`).join('');
-    const flags=[l.quick?`<span class="chip">${ico('bolt')}быстрый результат</span>`:'', l.skill?`<span class="chip skill">${ico('spark')}есть скилл для установки</span>`:'', l.hw?`<span class="chip ${done?'ok':'lock'}">${ico(done?'check':'lock')}${done?'сдано':'после сдачи откроется следующий модуль'}</span>`:''].filter(Boolean).join('');
-    html+=`<button class="lesson ${isHW?'ishw':''}" data-open-lesson="${i}"><span class="n">${isHW?ico('pen'):i+1}</span><span><div class="t">${l.t}</div>${l.s?`<div class="s">${l.s}</div>`:''}<div class="kinds">${kind}${mats}</div>${flags?`<div class="chips">${flags}</div>`:''}</span><span class="d">${isHW?(done?'сдано':'загрузить'):''}</span></button>`;
+    const isHW=!!(l.hw||l.file), done=l.hw&&has(l.hw);
+    const right = isHW ? (done?`<span class="chip ok">${ico('check')}сдано</span>`:`<span class="chip lock">${ico('pen')}задание</span>`) : `<span class="d">${ico('play','sm')} ${l.d}</span>`;
+    html+=`<button class="lesson ${isHW?'ishw':''}" data-open-lesson="${i}" ${isOpen(m.n)?'':'disabled'}><span class="n">${i+1}</span><span><div class="t">${l.t}</div>${l.s?`<div class="s">${l.s}</div>`:''}</span><span class="d">${right}</span></button>`;
   });
-  html+=`</div><div class="meta">Примеры в заданиях ${t.ex}.</div>`;
-  const locks=m.lessons.filter(l=>l.hw).map(l=>`«${HW[l.hw]}»`);
-  if(locks.length) html+=`<div class="note">Чтобы открыть следующий модуль, сдай ${locks.length>1?'задания':'задание'} ${locks.join(' и ')}. Сдаёшь один раз, поменять можно ${editsWord(tf)}.</div>`;
-  html+=`<div><button class="btn" data-open-lesson="0" ${isOpen(m.n)?'':'disabled'}>Смотреть первый урок</button></div>`;
+  html+=`</div>
+  <div class="row"><button class="btn quiet" data-open-stage="${m.stage}">← ${m.stage}</button><span style="display:flex;gap:8px">${pos>0?`<button class="btn quiet" data-open-module="${ord[pos-1]}">← Модуль ${ord[pos-1]}</button>`:''}${pos<ord.length-1?`<button class="btn quiet" data-open-module="${ord[pos+1]}">Модуль ${ord[pos+1]} →</button>`:''}</span></div>`;
   return html;
 }
 
 function screenLesson(){
-  const m=MODULES[S.module]; const l=m.lessons[S.lesson]||MODULES[2].lessons[1]; const t=TRACKS[S.track]; const tf=TARIFFS[S.tariff];
-  const hwName=l.hw?HW[l.hw]:l.file;
-  let html=`<div>
-    <div class="row" style="margin-bottom:10px"><span class="badge">Модуль ${pad(m.n)} · ${m.t}</span><span class="meta">урок ${S.lesson+1} из ${m.lessons.length}${l.d?' · '+l.d:''}</span></div>
-    <h1 style="font-size:23px">${l.t}</h1>${l.s?`<p style="margin:6px 0 0;max-width:50ch">${l.s}.</p>`:''}
-  </div>
-  <div class="video"><button class="playbtn">${ico('play')} Включить урок${l.d?' · '+l.d:''}</button><span class="wm">${S.nick} · защищено</span></div>`;
+  const m=MODULES[S.module]; const l=m.lessons[S.lesson]||m.lessons[0]; const t=TRACKS[S.track]; const tf=TARIFFS[S.tariff];
+  const hwName=l.hw?HW[l.hw]:l.file; const isHW=!!hwName;
+  const prev=S.lesson>0, next=S.lesson<m.lessons.length-1;
+  let html=`
+  <div class="lnav"><button class="btn quiet" data-go="module">← Модуль ${m.n}</button><span class="meta">урок ${S.lesson+1} из ${m.lessons.length}</span></div>
+  <h1 style="font-size:23px">${l.t}</h1>${l.s?`<p style="margin:-14px 0 0;max-width:50ch">${l.s}.</p>`:''}`;
+  if(!isHW) html+=`<div class="video"><button class="playbtn">${ico('play')} Включить урок${l.d?' · '+l.d:''}</button><span class="wm">${S.nick} · защищено</span></div>`;
   if(l.mats&&l.mats.length){
-    html+=`<div class="matsbox"><span class="badge">${ico('file','sm')} Файлы к уроку: открой и сохрани</span><div class="mats">${l.mats.map(x=>`<a class="mat" href="#"><span class="ic">${x.ic}</span><span><div class="t">${x.t}</div>${x.s?`<div class="s">${x.s}</div>`:''}</span><span class="a">открыть</span></a>`).join('')}</div></div>`;
+    html+=`<div class="matsbox"><span class="badge">${ico('file','sm')} Файлы к уроку</span><div class="mats">${l.mats.map(x=>`<a class="mat" href="#"><span class="ic">${x.ic}</span><span><div class="t">${x.t}</div>${x.s?`<div class="s">${x.s}</div>`:''}</span><span class="a">открыть</span></a>`).join('')}</div></div>`;
   }
-  html+=`<div class="card"><span class="badge">Что сделать после урока</span><ol class="steps"><li>Открой Claude и повтори то, что было на экране.</li><li>Сохрани результат файлом. Он появится в «Мои файлы».</li>${l.skill?`<li>Нажми кнопку ниже и установи скилл «${l.skill}».</li>`:'<li>Переходи к следующему уроку.</li>'}</ol>${l.skill?`<div><button class="btn ghost">Установить скилл: ${l.skill}</button></div>`:''}</div>`;
-  if(hwName){
+  if(l.skill) html+=`<div class="card"><span class="badge">${ico('spark','sm')} Скилл к уроку</span><div>После урока установи скилл «${l.skill}»: одна команда, и Claude сделает это за тебя.</div><div><button class="btn ghost">Установить скилл</button></div></div>`;
+  if(isHW){
     const k=l.hw, submitted=k&&has(k), left=k?editsLeft(k):0;
-    html+=`<div class="card ${k?'key':''}"><span class="badge">${ico('pen','sm')} Задание: что загрузить</span><h3>${hwName}</h3>${k?`<div class="meta">${ico('unlock','sm')} после загрузки откроется следующий модуль</div>`:''}`;
+    html+=`<div class="card ${k?'key':''}"><span class="badge">${ico('pen','sm')} Задание</span><h3>${hwName}</h3>${k?`<div class="meta">${ico('unlock','sm')} после загрузки откроется следующий модуль</div>`:''}`;
     if(submitted){
       html+=`<div class="meta" style="color:var(--ok)">${ico('check','sm')} Загружено. Файл лежит в «Мои файлы».</div><div class="row"><button class="btn quiet" data-edit="${k}" ${left>0?'':'disabled'}>${ico('pen','sm')} Поменять или дополнить</button><span class="meta">${left>0?`можно поменять ещё: ${left}`:'поменять больше нельзя'}</span></div>`;
     } else {
-      html+=`<div>Загрузить можно один раз${k?`. Потом поменять ещё ${tf.edits>=99?'сколько угодно':tf.edits===1?'один раз':'два раза'}`:''}. Из этого файла Claude соберёт твою систему, поэтому пиши подробно и честно: что напишешь здесь, то и получишь на выходе.</div>
+      html+=`<div>Загрузить можно один раз${k?`. Потом поменять ещё ${tf.edits>=99?'сколько угодно':tf.edits===1?'один раз':'два раза'}`:''}. Из этого файла Claude соберёт твою систему, поэтому пиши подробно и честно.</div>
       <div class="field"><span class="q" style="font-size:14.5px">Проверь перед сдачей</span>
         <label class="check"><input type="checkbox" class="selfcheck">Ответила на все вопросы</label>
         <label class="check"><input type="checkbox" class="selfcheck">Есть конкретные примеры ${t.ex}</label>
@@ -559,8 +593,7 @@ function screenLesson(){
     }
     html+=`</div>`;
   }
-  const prev=S.lesson>0, next=S.lesson<m.lessons.length-1;
-  html+=`<div class="row"><button class="btn quiet" data-go="module">← К модулю</button><span style="display:flex;gap:8px">${prev?`<button class="btn quiet" data-lesson="${S.lesson-1}">Назад</button>`:''}${next?`<button class="btn quiet" data-lesson="${S.lesson+1}">Следующий урок →</button>`:''}</span></div>`;
+  html+=`<div class="pager">${prev?`<button class="pbtn" data-lesson="${S.lesson-1}"><span class="pk">← Назад</span><span class="pt">${m.lessons[S.lesson-1].t}</span></button>`:'<span></span>'}${next?`<button class="pbtn right" data-lesson="${S.lesson+1}"><span class="pk">Дальше →</span><span class="pt">${m.lessons[S.lesson+1].t}</span></button>`:`<button class="pbtn right" data-open-stage="${m.stage}"><span class="pk">Модуль пройден →</span><span class="pt">К этапу «${m.stage}»</span></button>`}</div>`;
   return html;
 }
 
@@ -591,6 +624,8 @@ function screenProfile(){
   </div>
   <div class="row">${S.tariff!=='vip'?`<button class="btn ghost">Перейти на тариф выше</button>`:''}<button class="btn quiet">Добавить кабинет на экран телефона</button></div>
   <div class="card"><label class="check"><input type="checkbox"><span style="font-size:13px">Можно использовать мой результат как кейс с моим ником. Можно отозвать в любой момент.</span></label></div>
+  <div class="how"><span class="badge">Как здесь всё работает</span><div class="how-steps"><span>${ico('play')}<span><b>1. Смотришь урок</b>10–15 минут</span></span><span>${ico('spark')}<span><b>2. Повторяешь в Claude</b>то же самое, что на экране</span></span><span>${ico('pen')}<span><b>3. Загружаешь результат</b>в задании к уроку</span></span><span>${ico('unlock')}<span><b>4. Открывается следующий модуль</b>сразу, без проверки</span></span></div></div>
+  <div class="note">Следующие модули открывают пять заданий: распаковка, аудитория, что продаёшь, оффер, план бесплатного урока. Если 14 дней ничего не сдаёшь, всё откроется само, а доступ продлится на 2 недели.</div>
   <div class="note">Маршрут лучше не менять после модуля 2: файл об аудитории собран под него.</div>`;
 }
 
@@ -606,14 +641,14 @@ function showOffer(){
 }
 
 /* ---------- рендер ---------- */
-const SCREENS={anketa:['Анкета',screenAnketa],home:['Главная',screenHome],module:['Модуль',screenModule],lesson:['Урок',screenLesson],files:['Мои файлы',screenFiles],services:['Сервисы',screenServices],profile:['Профиль',screenProfile]};
+const SCREENS={anketa:['Анкета',screenAnketa],home:['Главная',screenHome],stage:['Этап',screenStage],module:['Уроки',screenModule],lesson:['Урок',screenLesson],files:['Мои файлы',screenFiles],services:['Сервисы',screenServices],profile:['Профиль',screenProfile]};
 function render(){
   const c=document.getElementById('content'); c.innerHTML=SCREENS[S.screen][1]();
-  c.classList.toggle('glow', S.screen==='module' && S.module===11);
+  c.classList.toggle('glow', false);
   const tf=TARIFFS[S.tariff], t=TRACKS[S.track];
   document.getElementById('who').textContent=`${S.name} · ${tf.name}`;
   const tabs=['home','module','files','services','profile'];
-  const act=k=>S.screen===k||(S.screen==='lesson'&&k==='module');
+  const act=k=>S.screen===k||(S.screen==='lesson'&&k==='module')||(S.screen==='stage'&&k==='home');
   const TI={home:'home',module:'book',files:'folder',services:'grid',profile:'user'};
   document.getElementById('tabs').innerHTML=tabs.map(k=>`<button class="${act(k)?'on':''}" data-screen="${k}">${MASK[TI[k]]?`<span class="ticon" style="--m:url(${MASK[TI[k]]})"></span>`:ico(TI[k])}${SCREENS[k][0]}</button>`).join('');
   document.getElementById('rail').innerHTML=`<div><div style="font-family:var(--serif);color:var(--ink);font-size:17px">${S.name}</div><div class="meta">${tf.name} · ${t.name}</div></div>
@@ -636,6 +671,8 @@ document.addEventListener('click',e=>{
   if(b=q('[data-idle]')){S.idle=!S.idle; render(); return;}
   if(b=q('[data-screen]')){S.screen=b.dataset.screen; if(S.screen==='module') S.module=nextModule(); render(); return;}
   if(b=q('[data-go]')){S.screen=b.dataset.go; render(); return;}
+  if(b=q('[data-open-stage]')){S.stage=b.dataset.openStage; S.screen='stage'; render(); return;}
+  if(b=q('[data-open-direct]')){const [n,i]=b.dataset.openDirect.split(':'); S.module=+n; S.lesson=+i; S.screen='lesson'; render(); return;}
   if(b=q('[data-open-module]')){S.module=+b.dataset.openModule; S.lesson=0; S.screen='module'; render(); return;}
   if(b=q('[data-open-lesson]')){ if(b.disabled) return; S.lesson=+b.dataset.openLesson; S.screen='lesson'; render(); return;}
   if(b=q('[data-lesson]')){S.lesson=+b.dataset.lesson; render(); return;}
