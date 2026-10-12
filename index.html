@@ -468,7 +468,7 @@ function screenHome(){
   const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const L=steps(); const cur=curStep(); const total=L.filter(x=>!x.na).length; const done=Math.min(S.pos,total);
   let html=`
   <div class="band tall" ${bg(GIMG[cur.g]||'a')}><span class="big">${String(cur.i+1).padStart(2,'0')}</span>
-    <div class="kicker"><span class="badge">Твой следующий шаг · ${cur.i+1} из ${total}</span></div>
+    <div class="kicker"><span class="badge">Твой следующий шаг</span></div>
     <h1>${cur.t}</h1><p>${cur.r}.</p>
     <button class="btn" data-open-step="${cur.i}">${cur.type==='task'?ico('pen'):ico('play')} ${cur.type==='task'?'Сдать задание':cur.type==='text'||cur.type==='guide'?'Читать':'Смотреть'}${cur.d?' · '+cur.d+' мин':''}</button>
   </div>
