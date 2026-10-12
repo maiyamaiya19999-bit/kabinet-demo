@@ -275,11 +275,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 /* v31: modules as photo cards (GetCourse-like layout, our style), module → steps */
 .linkbtn{background:none;border:0;padding:0;color:var(--soft);font-size:14px;cursor:pointer}
 .linkbtn:hover{color:var(--bordo)}
-.welcome{position:relative;color:#fff;background:var(--dark) center/cover no-repeat;padding:26px 24px;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;isolation:isolate}
-.welcome::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,27,25,.15) 0%,rgba(30,27,25,.55) 45%,rgba(30,27,25,.92) 100%);z-index:-1}
-.welcome .hi{font-family:var(--serif);font-size:24px;line-height:1.25;color:#fff}
-.welcome .hi em{font-style:italic;font-weight:400;color:#fff}
-.welcome .sub{font-size:13.5px;color:#fff;opacity:.85}
+.welcome{position:relative;color:var(--ink);padding:28px 24px 26px;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;isolation:isolate;overflow:hidden;background:linear-gradient(120deg,#FCFAF6 0%,#F6F0E7 55%,#EFE7DC 100%);border:1px solid var(--hair)}
+.welcome::before{content:"";position:absolute;right:-120px;top:-150px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,#F3E6D8,rgba(243,230,216,0) 70%);filter:blur(30px);opacity:.9;pointer-events:none;z-index:0;transform:translate3d(0,calc(var(--py,0) * -0.18px),0)}
+.welcome::after{content:"";position:absolute;inset:-30%;pointer-events:none;z-index:0;opacity:.34;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.33 0 0 0 0 0.27 0 0 0 1 0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0.25 0.55 0.9'/></feComponentTransfer></filter><rect width='160' height='160' filter='url(%23g)'/></svg>");background-size:96px 96px}
+.welcome > *{position:relative;z-index:1}
+.welcome .hi{font-family:var(--serif);font-size:24px;line-height:1.25;color:var(--ink);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.welcome .hi .hand{font-size:46px;line-height:.8;color:var(--bordo);position:relative;top:4px}
+.welcome .sub{font-family:var(--meta);font-style:italic;font-size:15px;line-height:1.55;color:var(--body);max-width:52ch}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mini{display:flex;flex-direction:column;gap:6px;padding:14px 14px;border:1px solid var(--hair);background:var(--paper);text-align:left;cursor:pointer;color:inherit}
 .mini .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
@@ -302,8 +304,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .mcard .bar i{background:#fff}
 .mcard .foot{display:flex;justify-content:space-between;align-items:center;font-family:var(--meta);font-style:italic;font-size:11.5px;color:var(--soft-on-dark);margin-top:6px}
 .mcard .foot .ico,.mcard .foot .micon{width:15px;height:15px;margin:0 4px 0 0}
-.mcard.locked,.mcard.na{filter:saturate(.25)}
-.mcard.locked .name,.mcard.na .name{opacity:.7}
+.mcard.locked,.mcard.na{filter:saturate(.2);opacity:.62}
+.mcard.locked .name,.mcard.na .name{opacity:.85}
 .mcard.cur{outline:2px solid #fff;outline-offset:-6px}
 .wide{grid-column:1/-1;min-height:150px}
 .links{display:grid;grid-template-columns:1fr;gap:8px}
@@ -525,7 +527,7 @@ function screenHome(){
   const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const L=flat(); const cur=curStep(); const curMod=modules()[cur.mod];
   const days=tf.days+(S.idle?14:0); const total=L.filter(x=>!x.na).length;
   let html=`
-  <div class="welcome" ${bg('a')}><span class="badge" style="color:var(--soft-on-dark)">${tf.name}</span><div class="hi">Добро пожаловать, <em>${S.name}</em></div><div class="sub">${t.from}</div></div>
+  <div class="welcome"><div class="hi"><span>Добро пожаловать,</span><span class="hand">${S.name}</span></div><div class="sub">${t.from}</div></div>
   <div class="duo">
     <div class="mini"><span class="k">Доступ к курсу</span><span class="v">${days}<small>${plural(days,'день','дня','дней')}</small></span><span class="a">до ${dateStr(days)}</span></div>
     <button class="mini" data-open-step="${cur.mod}:${cur.j}"><span class="k">Ты остановилась</span><span class="t">${cur.t}</span><span class="a">продолжить ${ico('arrow','sm')}</span></button>
