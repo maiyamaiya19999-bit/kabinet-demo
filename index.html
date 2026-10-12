@@ -638,7 +638,7 @@ const SCREENS={anketa:['Анкета',screenAnketa],home:['Главная',scree
 function render(){
   const c=document.getElementById('content'); c.innerHTML=SCREENS[S.screen][1]();
   const tf=TARIFFS[S.tariff], t=TRACKS[S.track];
-  document.getElementById('who').textContent=`${S.name} · ${tf.name}`;
+  document.getElementById('who').textContent=S.nick;
   const tabs=['home','files','services','profile']; const TI={home:'home',files:'folder',services:'grid',profile:'user'};
   const act=k=>S.screen===k||((S.screen==='step'||S.screen==='module')&&k==='home');
   document.getElementById('tabs').innerHTML=tabs.map(k=>`<button class="${act(k)?'on':''}" data-screen="${k}">${MASK[TI[k]]?`<span class="ticon" style="--m:url(${MASK[TI[k]]})"></span>`:ico(TI[k])}${SCREENS[k][0]}</button>`).join('');
