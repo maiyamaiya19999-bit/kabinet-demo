@@ -26,7 +26,7 @@ body{margin:0;background:var(--milk);color:var(--body);font-family:var(--sans);f
 .st .ico{margin-right:6px;width:20px;height:20px;vertical-align:-5px}
 .st .ico svg{stroke-width:1.45}
 .tabs .ico{width:20px;height:20px;display:block;margin:0 auto 3px}
-.chip .ico{width:12px;height:12px;vertical-align:-2px;margin-right:4px}
+.chip .ico{width:14px;height:14px;margin:0}
 .stat .ico{color:var(--soft);width:16px;height:16px}
 .wash-section{display:flex;flex-direction:column;gap:22px}
 /* peach: gradient + light blob + coarse grain. Used only on the stats block and the current module. */
@@ -197,22 +197,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .matchip{font-size:12.5px;color:var(--soft);display:inline-flex;align-items:center;gap:4px}
 .lesson.ishw{background:var(--wash)}
 .lesson.ishw .n .ico{color:var(--ok)}
-.chip{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--hair);color:var(--soft)}
+.chip{font-size:12px;letter-spacing:0;text-transform:none;padding:4px 9px;border:1px solid var(--hair);color:var(--soft);display:inline-flex;align-items:center;gap:5px;font-family:var(--meta);font-style:italic}
 .chip.skill{border-color:var(--bordo);color:var(--bordo)}
-.chip.lock{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.lock{border-color:var(--bordo);color:var(--bordo)}
 .chip.ok{border-color:var(--ok);color:var(--ok)}
 
 /* video and materials */
 .video{aspect-ratio:16/9;background:var(--video);display:grid;place-items:center;position:relative;max-width:100%;border:1px solid var(--hair)}
 .video .lbl{font-family:var(--meta);font-style:italic;color:var(--soft);font-size:13px}
-.playbtn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid var(--hair);color:var(--ink);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:12px 18px;cursor:pointer}
+.playbtn{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.94);border:0;color:var(--ink);font-weight:600;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;padding:14px 22px;cursor:pointer;box-shadow:0 2px 14px rgba(38,34,32,.12)}
 .playbtn .ico{color:var(--bordo);width:20px;height:20px}
 .video .wm{position:absolute;right:12px;bottom:10px;font-size:11px;color:var(--soft);opacity:.8}
 .matsbox{background:var(--wash);padding:18px 20px;display:flex;flex-direction:column;gap:12px}
 .mats{display:flex;flex-direction:column}
-.mat{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--hair);text-decoration:none;color:inherit}
+.mat{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--hair);text-decoration:none;color:inherit}
+.mat:hover .t{color:var(--bordo)}
 .mat:last-child{border-bottom:0}
-.mat .ic{font-family:var(--serif);font-style:italic;font-size:11px;letter-spacing:.04em;color:var(--bordo);border:1px solid var(--bordo);height:32px;display:grid;place-items:center;text-transform:uppercase;background:var(--paper)}
+.mat .ic{width:40px;height:40px;display:grid;place-items:center;background:var(--paper);border:1px solid var(--hair);color:var(--bordo)}
+.mat .ic .ico{width:19px;height:19px}
+.mat .a .ico{width:22px;height:22px;color:var(--bordo)}
 .mat .t{color:var(--ink);font-size:14.5px}
 .mat .s{font-size:12.5px;color:var(--soft)}
 .mat .a{font-family:var(--meta);font-style:italic;font-size:12.5px;color:var(--bordo);white-space:nowrap}
@@ -582,12 +585,13 @@ function screenLesson(){
   const prev=S.lesson>0, next=S.lesson<m.lessons.length-1;
   let html=`
   <div class="lnav"><button class="btn quiet" data-go="module">← Модуль ${m.n}</button><span class="meta">урок ${S.lesson+1} из ${m.lessons.length}</span></div>
-  <h1 style="font-size:23px">${l.t}</h1>${l.s?`<p style="margin:-14px 0 0;max-width:50ch">${l.s}.</p>`:''}`;
+  <div><h1 style="font-size:23px">${l.t}</h1>${l.s?`<p style="margin:8px 0 0;max-width:50ch">${l.s}.</p>`:''}</div>`;
   if(!isHW) html+=`<div class="video"><button class="playbtn">${ico('play')} Включить урок${l.d?' · '+l.d:''}</button><span class="wm">${S.nick} · защищено</span></div>`;
   if(l.mats&&l.mats.length){
-    html+=`<div class="matsbox"><span class="badge">${ico('file','sm')} Файлы к уроку</span><div class="mats">${l.mats.map(x=>`<a class="mat" href="#"><span class="ic">${x.ic}</span><span><div class="t">${x.t}</div>${x.s?`<div class="s">${x.s}</div>`:''}</span><span class="a">открыть</span></a>`).join('')}</div></div>`;
+    const MI={'PDF':['file','PDF'],'Промпт':['spark','промпт'],'Чек':['check','чек-лист'],'Презент.':['layers','презентация'],'Пример':['book','пример'],'Табл.':['grid','таблица'],'Шаблон':['file','шаблон'],'Гайд':['book','гайд']};
+    html+=`<div class="matsbox"><span class="badge">${ico('file','sm')} Файлы к уроку</span><div class="mats">${l.mats.map(x=>{const mi=MI[x.ic]||['file',x.ic.toLowerCase()]; return `<a class="mat" href="#"><span class="ic">${ico(mi[0])}</span><span><div class="t">${x.t}</div><div class="s">${mi[1]}${x.s?' · '+x.s:''}</div></span><span class="a">${ico('arrow')}</span></a>`;}).join('')}</div></div>`;
   }
-  if(l.skill) html+=`<div class="card"><span class="badge">${ico('spark','sm')} Скилл к уроку</span><div>После урока установи скилл «${l.skill}»: одна команда, и Claude сделает это за тебя.</div><div><button class="btn ghost">Установить скилл</button></div></div>`;
+  if(l.skill) html+=`<div class="card"><span class="badge">${ico('spark','sm')} Скилл к уроку</span><h3 style="font-size:16px">${l.skill}</h3><div>После урока установи его одной командой, и Claude будет делать это за тебя.</div><div><button class="btn ghost">Установить скилл</button></div></div>`;
   if(isHW){
     const k=l.hw, submitted=k&&has(k), left=k?editsLeft(k):0;
     html+=`<div class="card ${k?'key':''}"><span class="badge">${ico('pen','sm')} Задание</span><h3>${hwName}</h3>${k?`<div class="meta">${ico('unlock','sm')} после загрузки откроется следующий модуль</div>`:''}`;
