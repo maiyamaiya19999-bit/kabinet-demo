@@ -272,6 +272,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .modal h3 em{font-style:italic;font-weight:400;color:var(--bordo)}
 @media (prefers-reduced-motion:no-preference){.step,.opt,.btn,.lesson .t,.step .t{transition:color .15s,border-color .15s,background .15s}}
 </style><style>
+/* v29 polish */
+.linkbtn{background:none;border:0;padding:0;color:var(--soft);font-size:14px;cursor:pointer}
+.linkbtn:hover{color:var(--bordo)}
+.resline{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-family:var(--serif);font-style:italic;font-size:16px;color:var(--bordo);line-height:1.4;margin-top:-8px}
+.resline .ico{width:22px;height:22px;color:var(--bordo)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:-6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--body);padding:6px 10px;border:1px solid var(--hair);background:var(--paper)}
+.pill .ico{width:15px;height:15px}
+.pill.lock{border-color:var(--bordo);color:var(--bordo)}
+.band .kicker{padding-right:96px}
+@media (max-width:480px){.band .big{font-size:64px;top:16px;right:18px}.band h1{font-size:25px}}
+.srow .st i{font-style:italic}
+@media (max-width:480px){.srow .st i{display:none}.srow{grid-template-columns:34px 1fr auto;gap:12px}}
 /* v28: flat path with explanations */
 .path{display:flex;flex-direction:column}
 .gcap{display:grid;grid-template-columns:1fr;gap:2px;padding:26px 0 10px}
@@ -455,7 +468,7 @@ function screenHome(){
   const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const L=steps(); const cur=curStep(); const total=L.filter(x=>!x.na).length; const done=Math.min(S.pos,total);
   let html=`
   <div class="band tall" ${bg(GIMG[cur.g]||'a')}><span class="big">${String(cur.i+1).padStart(2,'0')}</span>
-    <div class="kicker"><span class="badge">Твой следующий шаг</span><span class="meta">шаг ${cur.i+1} из ${total}</span></div>
+    <div class="kicker"><span class="badge">Твой следующий шаг · ${cur.i+1} из ${total}</span></div>
     <h1>${cur.t}</h1><p>${cur.r}.</p>
     <button class="btn" data-open-step="${cur.i}">${cur.type==='task'?ico('pen'):ico('play')} ${cur.type==='task'?'Сдать задание':cur.type==='text'||cur.type==='guide'?'Читать':'Смотреть'}${cur.d?' · '+cur.d+' мин':''}</button>
   </div>
@@ -467,9 +480,9 @@ function screenHome(){
   for(const x of L){
     if(x.g!==g){ g=x.g; html+=`<div class="gcap"><span class="gk">${g}${x.na?' · в тарифе Рост и доход':''}</span><span class="gp">${GPROMISE[g]}</span></div>`; }
     const st=stateOf(x);
-    const stt = st==='na'?micon('close')+'в тарифе выше': st==='locked'?micon('close')+'пока закрыт': st==='done'?ico('check')+'сделано': st==='cur'?ico('check')+'ты здесь': ico('check')+'можно';
-    const meta = st==='locked'?`${ico('lock')}откроется после задания выше`:typeMeta(x);
-    html+=`<button class="srow ${st}" data-open-step="${x.i}"><span class="n">${x.i+1}</span><span><div class="t">${x.t}</div><div class="r">${x.r}</div><div class="m">${meta}${x.hw?` · ${ico('lock')}открывает следующие шаги`:''}</div></span><span class="st">${stt}</span></button>`;
+    const stt = st==='na'?micon('close'): st==='locked'?micon('close'): st==='done'?ico('check')+'<i>сделано</i>': st==='cur'?ico('check')+'<i>ты здесь</i>': ico('check');
+    const meta = st==='locked'?`${ico('lock')}после шага ${lockIndex()+1}`:typeMeta(x);
+    html+=`<button class="srow ${st}" data-open-step="${x.i}"><span class="n">${x.i+1}</span><span><div class="t">${x.t}</div><div class="m">${meta}${x.hw?` · ${ico('lock')}задание`:x.file?` · ${ico('pen')}задание`:''}</div></span><span class="st">${stt}</span></button>`;
   }
   html+=`</div>
   <div class="support"><span><div class="t">Застряла или что-то не работает?</div><div class="s">Поддержка отвечает в будни с 10:00 до 19:00 по Москве</div></span><button class="btn ghost">${ico('chat')} Написать</button></div>`;
@@ -478,9 +491,10 @@ function screenHome(){
 
 function screenStep(){
   const L=steps(); const x=L[S.step]||L[0]; const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const st=stateOf(x); const total=L.filter(y=>!y.na).length;
-  let html=`<div class="lnav"><button class="btn quiet" data-screen="home">← Все шаги</button><span class="meta">шаг ${x.i+1} из ${total}</span></div>
-  <div><div class="badge" style="margin-bottom:8px">${x.g}</div><h1 style="font-size:23px">${x.t}</h1></div>
-  <div class="facts"><div class="fact"><span class="k">Формат</span><span class="v">${typeWord(x)}${x.d?' · '+x.d+' мин':''}</span></div><div class="fact"><span class="k">Что сделаешь</span><span class="v">${x.r}</span></div><div class="fact"><span class="k">Задание</span><span class="v">${x.hw?'да, с замком':x.file?'да':'нет'}</span></div></div>`;
+  let html=`<div class="lnav"><button class="linkbtn" data-screen="home">← Все шаги</button><span class="meta">${x.g} · шаг ${x.i+1} из ${total}</span></div>
+  <div><h1 style="font-size:24px">${x.t}</h1></div>
+  <div class="resline">${ico('arrow')}<span>${x.r}</span></div>
+  <div class="pills"><span class="pill">${ico(x.type==='task'?'pen':x.type==='video'||x.type==='audio'?'play':x.type==='guide'?'book':'text')}${typeWord(x)}${x.d?' · '+x.d+' мин':''}</span>${x.hw?`<span class="pill lock">${ico('lock')}задание с замком</span>`:x.file?`<span class="pill">${ico('pen')}задание</span>`:''}${x.skill?`<span class="pill">${ico('spark')}скилл</span>`:''}</div>`;
   if(st==='na'){ html+=`<div class="card key"><span class="badge">Этого шага нет в твоём тарифе</span><h3>Он есть в тарифе <em>Рост и доход</em></h3><div>Там шесть шагов о том, как блог приносит деньги: что продавать, оффер, бесплатный урок, воронка, бот, прогрев. Доплата 2.000 ₽, в любой момент.</div><div><button class="btn">Доплатить 2.000 ₽</button></div></div>`; return html+pager(); }
   if(st==='locked'){ const li=lockIndex(); html+=`<div class="card key"><span class="badge">${ico('lock','sm')} Пока закрыт</span><h3>Что сделать, чтобы открыть</h3><div>Сдай задание «${HW[L[li].hw]}», это шаг ${li+1}. Шаги идут по порядку, чтобы система собралась правильно.</div><div><button class="btn ghost" data-open-step="${li}">Перейти к шагу ${li+1}</button></div></div>`; return html+pager(); }
   html+=`<div class="why"><span class="hand">Майя</span><p>${x.why}</p></div>`;
