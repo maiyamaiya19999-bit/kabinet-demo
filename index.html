@@ -272,28 +272,51 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .modal h3 em{font-style:italic;font-weight:400;color:var(--bordo)}
 @media (prefers-reduced-motion:no-preference){.step,.opt,.btn,.lesson .t,.step .t{transition:color .15s,border-color .15s,background .15s}}
 </style><style>
-/* v27 additions: flat path */
+/* v28: flat path with explanations */
 .path{display:flex;flex-direction:column}
-.gcap{display:flex;align-items:center;gap:14px;padding:22px 0 8px;color:var(--bordo);font-family:var(--serif);font-style:italic;font-size:13px;letter-spacing:2.5px;text-transform:uppercase}
-.gcap::after{content:"";flex:1;border-top:1px solid var(--hair)}
+.gcap{display:grid;grid-template-columns:1fr;gap:2px;padding:26px 0 10px}
+.gcap .gk{display:flex;align-items:center;gap:14px;color:var(--bordo);font-family:var(--serif);font-style:italic;font-size:13px;letter-spacing:2.5px;text-transform:uppercase}
+.gcap .gk::after{content:"";flex:1;border-top:1px solid var(--hair)}
+.gcap .gp{font-size:13px;color:var(--soft)}
 .srow{display:grid;grid-template-columns:38px 1fr auto;gap:14px;align-items:center;padding:14px 0;background:none;border:0;border-bottom:1px solid var(--hair);text-align:left;width:100%;cursor:pointer;color:inherit}
 .srow .n{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ok);text-align:center;font-variant-numeric:tabular-nums}
 .srow .t{font-family:var(--serif);font-size:15.5px;color:var(--ink);line-height:1.35}
-.srow .m{font-size:12.5px;color:var(--soft);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.srow .r{font-size:13px;color:var(--body);margin-top:2px}
+.srow .m{font-size:12.5px;color:var(--soft);margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .srow .m .ico{width:14px;height:14px;vertical-align:-2px}
 .srow .st{font-family:var(--meta);font-style:italic;font-size:12.5px;color:var(--ok);white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
 .srow .st .ico,.srow .st .micon{width:20px;height:20px;margin:0}
 .srow.cur .t{font-weight:700}
-.srow.locked .n,.srow.locked .t,.srow.locked .st,.srow.locked .m{color:var(--lock)}
-.srow.na .n,.srow.na .t,.srow.na .st,.srow.na .m{color:var(--lock)}
+.srow.locked .n,.srow.locked .t,.srow.locked .st,.srow.locked .m,.srow.locked .r{color:var(--lock)}
+.srow.na .n,.srow.na .t,.srow.na .st,.srow.na .m,.srow.na .r{color:var(--lock)}
 .srow:hover .t{color:var(--bordo)}
 .srow.locked:hover .t,.srow.na:hover .t{color:var(--lock)}
-.textbox{background:var(--paper);border:1px solid var(--hair);padding:20px 22px;display:flex;flex-direction:column;gap:10px}
-.textbox p{margin:0}
-.textbox .badge{margin-bottom:2px}
-.prompt{background:var(--wash);padding:14px 16px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;border-left:2px solid var(--bordo)}
-.copy{align-self:flex-start}
-.task-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* step page */
+.facts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.fact{background:var(--paper);padding:12px 12px;display:flex;flex-direction:column;gap:2px}
+.fact .k{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.fact .v{font-family:var(--serif);font-size:14px;color:var(--ink);line-height:1.35}
+.why{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:16px 18px;background:var(--wash)}
+.why .hand{font-size:34px;line-height:.9}
+.why p{margin:0;font-size:14px;font-style:italic}
+.guide{display:flex;flex-direction:column;gap:0;border:1px solid var(--hair);background:var(--paper)}
+.gstep{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 18px;border-bottom:1px solid var(--hair)}
+.gstep:last-child{border-bottom:0}
+.gstep .gn{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--bordo);line-height:1;padding-top:2px}
+.gstep .gt{font-family:var(--serif);font-size:16px;color:var(--ink);line-height:1.35}
+.gstep .gd{font-size:14px;color:var(--body);margin-top:4px}
+.gstep .shot{margin-top:12px;aspect-ratio:16/9;background:var(--video);display:grid;place-items:center;border:1px solid var(--hair)}
+.gstep .shot span{font-family:var(--meta);font-style:italic;font-size:12.5px;color:var(--soft)}
+.prompt{margin-top:12px;background:var(--wash);padding:14px 16px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;border-left:2px solid var(--bordo)}
+.copy{margin-top:10px}
+.donecheck{display:flex;flex-direction:column;gap:8px;padding:18px 20px;border:1px solid var(--bordo);box-shadow:inset 0 0 0 4px var(--paper),inset 0 0 0 5px var(--bordo);background:var(--paper)}
+.donecheck .badge{margin-bottom:4px}
+.support{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:16px 18px;border:1px solid var(--hair);background:var(--paper)}
+.support .t{font-family:var(--serif);font-size:15px;color:var(--ink)}
+.support .s{font-size:12.5px;color:var(--soft);margin-top:2px}
+.goal{display:flex;flex-direction:column;gap:6px;padding:18px 20px;border:1px solid var(--hair);background:var(--paper)}
+.goal .t{font-family:var(--serif);font-size:16px;color:var(--ink);line-height:1.4}
+.goal .s{font-size:13px;color:var(--soft)}
 </style>
 
 <div class="topbar">
@@ -315,7 +338,6 @@ const ICON={
  lock:'<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
  unlock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.3"/><rect x="8.5" y="11.5" width="7" height="5.5"/><path d="M10 11.5V9.5a2 2 0 0 1 3.8-.8"/></svg>',
  check:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.3"/><path d="M7.5 12.5l3 3L16.5 9"/></svg>',
- dot:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.3"/></svg>',
  play:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/></svg>',
  bolt:'<svg viewBox="0 0 24 24"><path d="M13 3 5 14h6l-1 7 8-11h-6z"/></svg>',
  spark:'<svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5 9 15M15 9l2.5-2.5"/></svg>',
@@ -330,6 +352,7 @@ const ICON={
  pen:'<svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16z"/><path d="M13 7l4 4"/></svg>',
  download:'<svg viewBox="0 0 24 24"><path d="M12 4v11M8 11l4 4 4-4M5 20h14"/></svg>',
  layers:'<svg viewBox="0 0 24 24"><path d="M12 4 3 9l9 5 9-5z"/><path d="M3 14l9 5 9-5"/></svg>',
+ chat:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>',
  arrow:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.3"/><path d="M8.5 12h7M13 9.5l2.5 2.5-2.5 2.5"/></svg>'
 };
 const ico=(k,cls='')=>`<span class="ico ${cls}">${ICON[k]}</span>`;
@@ -343,52 +366,48 @@ const micon=(k)=> MASK[k] ? `<span class="micon" style="--m:url(${MASK[k]})"></s
 /* ---------- состояние ---------- */
 const S={ track:'product', tariff:'money', screen:'home', hw:{unpack:1}, pos:2, idle:false, step:0, name:'Лена', nick:'@lena_psy', demo:false };
 const TRACKS={
-  life:{ name:'Лайф', h:'Твой блог <em>это ты</em>', sub:'Разберёмся, о чём ты, и научимся снимать так, чтобы нравиться себе.', ex:'из твоей жизни', from:'Привет! Иди по шагам, не перескакивай. Уже на этой неделе ты снимешь первый ролик про себя.' },
-  expert:{ name:'Лайф + польза', h:'Одна тема, в которой ты <em>лучше других</em>', sub:'Найдём твою тему и людей, которым она нужна.', ex:'из твоей темы', from:'Привет! Иди по шагам, не перескакивай. Уже на этой неделе у тебя будет первая карусель или ролик.' },
-  product:{ name:'Лайф + польза + продукт', h:'Блог, который <em>приводит клиентов</em>', sub:'Ты снимаешь два часа в неделю. Остальное делает система.', ex:'из практики и клиентов', from:'Привет! Иди по шагам, не перескакивай. Уже на этой неделе Claude будет знать твою аудиторию и напишет первые сценарии.' }
+  life:{ name:'Лайф', goal:'Блог про тебя, который ведётся легко и растёт', chain:'ты → подписчики → ролики раз в неделю', ex:'из твоей жизни', from:'Привет! Иди по шагам, не перескакивай. Уже на этой неделе ты снимешь первый ролик про себя.' },
+  expert:{ name:'Лайф + польза', goal:'Блог по твоей теме, который читают и сохраняют', chain:'ты → твоя тема → люди, которым она нужна → ролики', ex:'из твоей темы', from:'Привет! Иди по шагам, не перескакивай. Уже на этой неделе у тебя будет первая карусель или ролик.' },
+  product:{ name:'Лайф + польза + продукт', goal:'Блог, который приводит клиентов, пока ты снимаешь два часа в неделю', chain:'ты → аудитория → продукт → ролики → бот → заявки', ex:'из практики и клиентов', from:'Привет! Иди по шагам, не перескакивай. Уже на этой неделе Claude будет знать твою аудиторию и напишет первые сценарии.' }
 };
-const TARIFFS={
-  grow:{ name:'Рост', price:'4.990 ₽', days:45, edits:1, money:false },
-  money:{ name:'Рост и доход', price:'6.990 ₽', days:90, edits:2, money:true },
-  vip:{ name:'VIP', price:'89.990 ₽', days:180, edits:99, money:true }
-};
+const TARIFFS={ grow:{ name:'Рост', price:'4.990 ₽', days:45, edits:1, money:false }, money:{ name:'Рост и доход', price:'6.990 ₽', days:90, edits:2, money:true }, vip:{ name:'VIP', price:'89.990 ₽', days:180, edits:99, money:true } };
 const HW={ unpack:'Распаковка', ca:'Кто твоя аудитория', product:'Что продаёшь', offer:'Оффер', selling:'План бесплатного урока' };
 const M=(ic,t,s)=>({ic,t,s});
 const GIMG={ 'Claude':'h','О тебе':'b','Блог':'p','Ролики':'c','Деньги':'q','Финал':'k' };
+const GPROMISE={ 'Claude':'Установишь Claude и поймёшь, как с ним работать', 'О тебе':'Claude узнает тебя и твоих людей и начнёт писать как ты', 'Блог':'Оформишь профиль и канал так, чтобы на них хотелось подписаться', 'Ролики':'Снимешь первые ролики, которые досматривают', 'Деньги':'Сделаешь так, чтобы блог приносил деньги', 'Финал':'Соберёшь всё в одну систему и получишь бонус' };
 
-/* ---------- шаги: одна дорожка ---------- */
+/* ---------- шаги ---------- */
 const BASE=[
- {g:'Claude', t:'Ставим Claude: регистрация, оплата из России, как устроен', type:'video', d:15, s:'Один урок с экрана. После него Claude работает', mats:[M('PDF','Конспект: регистрация, номер, карта, VPN'),M('Чек','Чек-лист «всё работает»')], note:'перезапись, короче'},
- {g:'О тебе', t:'Распаковка: отвечаешь на вопросы о себе', type:'video', d:6, s:'Отвечаешь голосом, Claude собирает файл', mats:[M('PDF','Вопросы распаковки'),M('Промпт','Сборка файла распаковки')], hw:'unpack'},
- {g:'О тебе', t:'Кто твоя аудитория', type:'text', d:10, s:'Отвечаешь на вопросы о людях, для которых ведёшь блог', mats:[M('PDF','Вопросы под твой маршрут'),M('Промпт','Анализ аудитории'),M('Пример','Анализ аудитории Майи')], hw:'ca'},
- {g:'О тебе', t:'Твой стиль речи и загрузка файлов в Claude', type:'text', d:8, s:'Два промпта и картинки, куда что положить', mats:[M('Промпт','Tone of Voice'),M('Промпт','База знаний'),M('Гайд','Как загрузить файлы в проект')], file:'Tone of Voice'},
- {g:'О тебе', t:'Первый запрос: Claude читает твои файлы', type:'text', d:5, s:'Твой первый результат. Один промпт', mats:[M('Промпт','Первый запрос')], quick:true},
- {g:'Блог', t:'Настраиваем аккаунт, чтобы ролики показывали нужным людям', type:'guide', d:8, mats:[M('Гайд','Техническая подготовка аккаунта'),M('Чек','Защита аккаунта')]},
- {g:'Блог', t:'Оформляем профиль: ник, шапка, аватарка, лента', type:'video', d:16, mats:[M('PDF','Конспект урока'),M('Презент.','Презентация к уроку')], skill:'Упаковка блога', file:'Ссылка на профиль'},
- {g:'Ролики', t:'Где брать темы для роликов', type:'video', d:12, mats:[M('PDF','Конспект урока'),M('Табл.','База залётных роликов'),M('Шаблон','Таблица тем')]},
- {g:'Ролики', t:'Как построить ролик, чтобы досмотрели до конца', type:'video', d:16, mats:[M('PDF','Пять опор ролика'),M('Промпт','Разговорный ролик'),M('Промпт','Экспертный ролик'),M('Промпт','Посты-карусели')], skill:'Сценарий ролика'},
- {g:'Ролики', t:'Ролики с текстом в описании и 50 идей одной кнопкой', type:'video', d:6, mats:[M('Промпт','50 reels одной кнопкой'),M('Аудио','Как пользоваться, 3 мин')], skill:'50 идей'},
- {g:'Ролики', t:'Как показывать себя в блоге: 10 идей', type:'video', d:11, mats:[M('PDF','10 идей и план на 4 недели'),M('Промпт','Сторителлинг')]},
- {g:'Ролики', t:'Снимаем и монтируем: съёмка за один день, суфлёр, Claude-монтажёр', type:'video', d:10, mats:[M('Чек','Чек-лист съёмочного дня'),M('Гайд','Приложение-суфлёр'),M('Гайд','Установка монтажёра')], skill:'Монтажёр', note:'новый урок'},
- {g:'Блог', t:'Telegram-канал: описание, закреп, первые посты', type:'audio', d:15, s:'Подкаст', mats:[M('PDF','Структура закрепа'),M('Промпт','Посты в Telegram')], skill:'Посты в Telegram'},
- {g:'Блог', t:'Выкладываем в несколько соцсетей и сохраняем контакты', type:'text', d:8, mats:[M('Чек','Что сохранить, чтобы не потерять людей'),M('Промпт','Один ролик под четыре соцсети')]},
- {g:'Ролики', t:'Задание: три ролика выложены', type:'task', file:'Ссылки на ролики'},
+ {g:'Claude', t:'Ставим Claude', type:'video', d:15, r:'Claude установлен, оплачен и готов к работе', why:'Без Claude не сработает ни один следующий шаг. Это твой рабочий инструмент на весь интенсив, ставим его один раз.', how:['Зарегистрируйся по инструкции из видео. Номер и карта есть в разделе «Сервисы».','Оплати подписку и включи VPN.','Открой Claude и найди, где чаты, проекты и файлы.'], check:'Claude открывается и отвечает на вопрос «привет, ты работаешь?»', mats:[M('PDF','Конспект: регистрация, номер, карта, VPN'),M('Чек','Чек-лист «всё работает»')]},
+ {g:'О тебе', t:'Распаковка: отвечаешь на вопросы о себе', type:'video', d:6, r:'Файл «Распаковка»: кто ты, что умеешь, чем цепляешь', why:'Из этого файла Claude поймёт, кто ты. Без него он будет писать как все, а с ним как ты. Это самое важное задание интенсива.', how:['Открой вопросы распаковки из файлов ниже.','Отвечай голосом в заметки или в избранное в Telegram. Не пиши красиво, говори как есть.','Переведи голосовые в текст и вставь в Claude с промптом «Сборка файла распаковки».','Сохрани ответ Claude файлом и загрузи его в задание ниже.'], check:'Файл с ответами на все вопросы, с примерами из твоей жизни', mats:[M('PDF','Вопросы распаковки'),M('Промпт','Сборка файла распаковки')], hw:'unpack'},
+ {g:'О тебе', t:'Кто твоя аудитория', type:'text', d:10, r:'Файл «Аудитория»: кто твои люди, что у них болит, чего хотят', why:'Чтобы писать для конкретной Лены, а не для всех. Все ролики и посты дальше будут собираться под этот файл.', how:['Открой вопросы под свой маршрут из файлов ниже.','Отвечай голосом, как в распаковке. Вспоминай реальных людей: клиенток, подписчиц, подруг.','Вставь ответы в Claude с промптом «Анализ аудитории». Посмотри пример, как выглядит результат у Майи.','Сохрани ответ файлом и загрузи в задание.'], check:'В файле есть боли, желания и страхи твоих людей их словами', mats:[M('PDF','Вопросы под твой маршрут'),M('Промпт','Анализ аудитории'),M('Пример','Анализ аудитории Майи')], hw:'ca'},
+ {g:'О тебе', t:'Твой стиль речи и загрузка файлов в Claude', type:'text', d:8, r:'Проект в Claude с тремя твоими файлами', why:'Чтобы Claude писал твоими словами и помнил о тебе всё, не надо каждый раз объяснять заново.', how:['Скопируй 2–3 своих поста или расшифровку голосового и вставь в Claude с промптом «Tone of Voice». Сохрани ответ файлом.','Создай в Claude проект с названием «Мой блог».','Загрузи в проект три файла: распаковку, аудиторию, стиль речи. Картинки, куда нажимать, ниже.'], check:'В проекте лежат три файла, Claude видит их в списке', mats:[M('Промпт','Tone of Voice'),M('Гайд','Как создать проект и загрузить файлы')], file:'Tone of Voice'},
+ {g:'О тебе', t:'Первый запрос: Claude читает твои файлы', type:'text', d:5, r:'Первый текст, написанный Claude как ты и для твоих людей', why:'Это момент, когда ты видишь, что система работает. Дальше всё будет строиться так же.', how:['Открой проект «Мой блог».','Скопируй промпт ниже и отправь.','Прочитай ответ. Если звучит не как ты, напиши Claude, что поправить, он запомнит.'], check:'Claude описал твою аудиторию и предложил 5 тем, которые тебе отзываются', mats:[M('Промпт','Первый запрос')], quick:true},
+ {g:'Блог', t:'Настраиваем аккаунт, чтобы ролики показывали нужным людям', type:'guide', d:8, r:'Аккаунт настроен и защищён', why:'Алгоритм решает, кому показать ролик, по настройкам аккаунта. Один раз настроил, и дальше не думаешь.', how:['Открой гайд и пройди по пунктам сверху вниз.','Отметь в чек-листе, что сделано.'], check:'Все пункты чек-листа отмечены', mats:[M('Гайд','Техническая подготовка аккаунта'),M('Чек','Защита аккаунта')]},
+ {g:'Блог', t:'Оформляем профиль: ник, шапка, аватарка, лента', type:'video', d:16, r:'Профиль, на который хочется подписаться', why:'Человек заходит в профиль с ролика и за три секунды решает, остаться или нет.', how:['Посмотри урок.','Установи скилл «Упаковка блога» и попроси Claude собрать варианты шапки по твоим файлам.','Выбери вариант, поставь в профиль.','Вставь ссылку на профиль в задание.'], check:'В шапке понятно, кто ты, для кого и зачем подписываться', mats:[M('PDF','Конспект урока'),M('Презент.','Презентация к уроку')], skill:'Упаковка блога', file:'Ссылка на профиль'},
+ {g:'Ролики', t:'Где брать темы для роликов', type:'video', d:12, r:'Таблица с 20 темами, которые уже залетали в твоей нише', why:'Ничего не нужно придумывать. Всё уже придумано, нужно увидеть, что работает, и сделать своё.', how:['Посмотри урок.','Открой шаблон таблицы и заполни по инструкции из урока.','Посмотри базу залётных роликов для насмотренности.'], check:'В таблице 20 тем с просмотрами от 100 тысяч', mats:[M('PDF','Конспект урока'),M('Табл.','База залётных роликов'),M('Шаблон','Таблица тем')]},
+ {g:'Ролики', t:'Как построить ролик, чтобы досмотрели до конца', type:'video', d:16, r:'Три готовых сценария твоим голосом', why:'Люди уходят с ролика на второй секунде не из-за света, а из-за того, что непонятно, зачем смотреть.', how:['Посмотри урок про пять опор ролика.','Установи скилл «Сценарий ролика». Он уже знает твои файлы.','Дай ему три темы из таблицы и попроси три сценария.','Прочитай вслух. Если язык не твой, попроси переписать проще.'], check:'Три сценария по 40–60 секунд, каждый с крючком в первой фразе', mats:[M('PDF','Пять опор ролика'),M('Промпт','Разговорный ролик'),M('Промпт','Экспертный ролик'),M('Промпт','Посты-карусели')], skill:'Сценарий ролика'},
+ {g:'Ролики', t:'Ролики с текстом в описании и 50 идей одной кнопкой', type:'video', d:6, r:'50 идей роликов на два месяца', why:'Это формат, который работает годами без трендов: короткое видео и польза в описании.', how:['Посмотри урок и послушай голосовое, как пользоваться.','Установи скилл «50 идей» и нажми кнопку.','Сохрани список в таблицу тем.'], check:'Список из 50 заголовков, половина из них тебе нравится', mats:[M('Промпт','50 reels одной кнопкой'),M('Аудио','Как пользоваться, 3 мин')], skill:'50 идей'},
+ {g:'Ролики', t:'Как показывать себя в блоге: 10 идей', type:'video', d:11, r:'План личного контента на 4 недели', why:'На пользу подписываются, на человека остаются. Без тебя в кадре блог не отличить от нейросети.', how:['Посмотри урок.','Выбери 4 идеи из десяти, по одной на неделю.','Попроси Claude через промпт «Сторителлинг» написать истории под каждую.'], check:'Четыре истории, в каждой есть момент, который был на самом деле', mats:[M('PDF','10 идей и план на 4 недели'),M('Промпт','Сторителлинг')]},
+ {g:'Ролики', t:'Снимаем и монтируем: съёмка за один день, суфлёр, Claude-монтажёр', type:'video', d:10, r:'Неделя роликов снята за два часа и смонтирована без тебя', why:'Снимать каждый день невозможно. Снимать раз в неделю можно годами.', how:['Посмотри урок.','Поставь суфлёр по гайду и загрузи в него сценарии.','Сними все ролики недели за один раз, по чек-листу съёмочного дня.','Установи скилл «Монтажёр» и отдай ему папку с видео.'], check:'Три смонтированных ролика с субтитрами и обложками', mats:[M('Чек','Чек-лист съёмочного дня'),M('Гайд','Приложение-суфлёр'),M('Гайд','Установка монтажёра')], skill:'Монтажёр'},
+ {g:'Блог', t:'Telegram-канал: описание, закреп, первые посты', type:'audio', d:15, r:'Канал оформлен, в нём три поста', why:'Telegram это место, где живут самые лояльные. Инста приводит, Telegram удерживает и продаёт.', how:['Послушай подкаст.','Напиши описание канала и закреп по структуре из файла.','Установи скилл «Посты в Telegram», наговори три темы голосом, получи три поста.'], check:'Новый человек за 10 секунд понимает, о чём канал и зачем подписаться', mats:[M('PDF','Структура закрепа'),M('Промпт','Посты в Telegram')], skill:'Посты в Telegram'},
+ {g:'Блог', t:'Выкладываем в несколько соцсетей и сохраняем контакты', type:'text', d:8, r:'Один ролик выходит в четырёх местах, контакты подписчиков сохранены', why:'Если завтра закроют одну площадку, у тебя останутся остальные и список людей.', how:['Заведи аккаунты там, где тебя ещё нет: Telegram, VK, MAX.','Попроси Claude адаптировать описание ролика под каждую площадку, промпт ниже.','Пройди чек-лист, что сохранить, чтобы не потерять людей.'], check:'Ролик выложен минимум в двух местах, чек-лист отмечен', mats:[M('Чек','Что сохранить, чтобы не потерять людей'),M('Промпт','Один ролик под четыре соцсети')]},
+ {g:'Ролики', t:'Задание: три ролика выложены', type:'task', r:'Первые три ролика в блоге', why:'Это точка, после которой блог начинает работать. Дальше только повторять раз в неделю.', how:['Выложи три ролика из шага «Снимаем и монтируем».','Вставь ссылки на них в задание.'], check:'Три ссылки на выложенные ролики', mats:[], file:'Ссылки на ролики'},
 ];
 const MONEY=[
- {g:'Деньги', t:'Что ты будешь продавать: услугу или небольшой продукт', type:'text', d:10, mats:[M('Промпт','Продукт из опыта'),M('Промпт','Кто это купит')], hw:'product'},
- {g:'Деньги', t:'Оффер: одно предложение, почему купят именно у тебя', type:'text', d:8, mats:[M('PDF','Формула оффера'),M('Пример','Офферы Майи')], hw:'offer'},
- {g:'Деньги', t:'Бесплатный урок, после которого покупают', type:'video', d:15, mats:[M('Промпт','Структура продающего материала'),M('Пример','Продающее видео Майи')], skill:'Продающий материал', hw:'selling'},
- {g:'Деньги', t:'Как человек доходит от ролика до покупки', type:'video', d:10, mats:[M('PDF','Схема воронки'),M('Пример','Бот Майи')]},
- {g:'Деньги', t:'Настраиваем бота за 15 минут', type:'video', d:12, mats:[M('Гайд','Настройка конструктора со скриншотами'),M('Промпт','Сообщения для бота')], skill:'Сборщик воронки', file:'Ссылка на бота'},
- {g:'Деньги', t:'Прогрев: посты на месяц, которые ведут к покупке', type:'video', d:17, mats:[M('Промпт','Структура прогрева'),M('Пример','Прогрев на месяц')], skill:'Прогрев', file:'План на месяц'},
+ {g:'Деньги', t:'Что ты будешь продавать', type:'text', d:10, r:'Файл «Продукт»: что продаёшь, кому, за сколько', why:'Ролики должны куда-то вести. Без продукта подписчики остаются красивой цифрой.', how:['Если у тебя есть услуга, опиши её по вопросам из промпта.','Если продукта нет, промпт «Продукт из опыта» соберёт его из твоей распаковки.','Прогони результат через промпт «Кто это купит».','Загрузи файл в задание.'], check:'Понятно, что это, для кого, какой результат и сколько стоит', mats:[M('Промпт','Продукт из опыта'),M('Промпт','Кто это купит')], hw:'product'},
+ {g:'Деньги', t:'Оффер: одно предложение, почему купят именно у тебя', type:'text', d:8, r:'Оффер в одно предложение', why:'Оффер это то, что ты говоришь в конце каждого ролика и в шапке профиля. Одно предложение, которое продаёт.', how:['Открой формулу оффера.','Собери 5 вариантов с Claude по твоему файлу «Продукт».','Выбери один, проверь по примерам Майи.','Загрузи в задание.'], check:'Оффер читается за 3 секунды и отвечает на «что я получу»', mats:[M('PDF','Формула оффера'),M('Пример','Офферы Майи')], hw:'offer'},
+ {g:'Деньги', t:'Бесплатный урок, после которого покупают', type:'video', d:15, r:'План твоего бесплатного урока', why:'Люди покупают после того, как получили пользу и увидели, что ты понимаешь их проблему.', how:['Посмотри урок про девять вопросов в голове покупателя.','Установи скилл «Продающий материал» и попроси план урока по твоим файлам.','Посмотри пример продающего видео Майи.','Загрузи план в задание.'], check:'В плане есть ответ на каждый из девяти вопросов', mats:[M('Промпт','Структура продающего материала'),M('Пример','Продающее видео Майи')], skill:'Продающий материал', hw:'selling'},
+ {g:'Деньги', t:'Как человек доходит от ролика до покупки', type:'video', d:10, r:'Понимание всей цепочки: ролик → бот → урок → оплата', why:'Чтобы настроить бота осознанно, а не по инструкции. Тогда ты сможешь его менять сама.', how:['Посмотри урок.','Открой бота Майи и пройди его как подписчица.','Нарисуй свою цепочку по схеме из файла.'], check:'Схема из 4 шагов нарисована под твой продукт', mats:[M('PDF','Схема воронки'),M('Пример','Бот Майи')]},
+ {g:'Деньги', t:'Настраиваем бота за 15 минут', type:'video', d:12, r:'Бот, который сам выдаёт урок и напоминает купить', why:'Бот работает, пока ты спишь. Он выдаёт урок, напоминает и ведёт к оплате.', how:['Зарегистрируйся в конструкторе из раздела «Сервисы».','Установи скилл «Сборщик воронки», он напишет все сообщения по твоим файлам.','Вставь сообщения в конструктор по гайду со скриншотами.','Проверь бота с другого аккаунта и вставь ссылку в задание.'], check:'Бот выдаёт урок по кодовому слову и присылает цепочку', mats:[M('Гайд','Настройка конструктора со скриншотами'),M('Промпт','Сообщения для бота')], skill:'Сборщик воронки', file:'Ссылка на бота'},
+ {g:'Деньги', t:'Прогрев: посты на месяц, которые ведут к покупке', type:'video', d:17, r:'План постов и сторис на месяц', why:'Продают не один пост, а последовательность. Claude соберёт её за тебя по твоим файлам.', how:['Посмотри урок.','Установи скилл «Прогрев», укажи даты и продукт.','Посмотри пример и поправь план под себя.','Загрузи план в задание.'], check:'План на 30 дней, в нём есть фон, польза, истории и день открытия продаж', mats:[M('Промпт','Структура прогрева'),M('Пример','Прогрев на месяц')], skill:'Прогрев', file:'План на месяц'},
 ];
 const FINAL=[
- {g:'Финал', t:'Одна команда: Claude ставит все скиллы под тебя', type:'video', d:8, s:'Берёт твои файлы из «Мои файлы»', mats:[M('Гайд','Установщик')], skill:'Установщик'},
- {g:'Финал', t:'Итоговая анкета и отзыв', type:'text', d:5, s:'Бонус за отзыв: ещё месяц доступа и обновления скиллов на год', mats:[M('Шаблон','Шаблон отзыва')]},
+ {g:'Финал', t:'Одна команда: Claude ставит все скиллы под тебя', type:'video', d:8, r:'Все скиллы настроены под твои файлы', why:'Ты собрала файлы, теперь Claude собирает из них систему. Дальше просто говоришь ему, что нужно.', how:['Скачай архив из «Мои файлы».','Открой Claude Code и введи одну команду из гайда.','Проверь: попроси «напиши пост» и посмотри, что он пишет как ты.'], check:'Claude отвечает твоим голосом без напоминаний', mats:[M('Гайд','Установщик')], skill:'Установщик'},
+ {g:'Финал', t:'Итоговая анкета и отзыв', type:'text', d:5, r:'Бонус: ещё месяц доступа и обновления скиллов на год', why:'Твои цифры «до» уже есть в анкете при входе. Сравним с «после» и увидим, что изменилось.', how:['Заполни итоговую анкету.','Напиши отзыв по шаблону: что было, что сделала, что получила.','Получи бонус.'], check:'Анкета заполнена, отзыв отправлен', mats:[M('Шаблон','Шаблон отзыва')]},
 ];
 function steps(){
-  const tf=TARIFFS[S.tariff];
-  let list;
+  const tf=TARIFFS[S.tariff]; let list;
   if(!tf.money) list=[...BASE, ...FINAL, ...MONEY.map(x=>({...x,na:true}))];
   else if(S.track==='product'){ const i=BASE.findIndex(x=>x.quick)+1; list=[...BASE.slice(0,i), ...MONEY, ...BASE.slice(i), ...FINAL]; }
   else list=[...BASE, ...MONEY, ...FINAL];
@@ -396,21 +415,14 @@ function steps(){
 }
 const has=k=>!!S.hw[k];
 function lockIndex(){ const L=steps(); const j=L.findIndex(x=>x.hw&&!has(x.hw)&&!x.na); return j<0?Infinity:j; }
-function stateOf(x){
-  if(x.na) return 'na';
-  if(S.tariff==='vip'||S.idle) return x.i<S.pos?'done':x.i===S.pos?'cur':'open';
-  const li=lockIndex();
-  if(x.i>li) return 'locked';
-  if(x.i<S.pos) return 'done';
-  if(x.i===S.pos) return 'cur';
-  return 'open';
-}
+function stateOf(x){ if(x.na) return 'na'; if(S.tariff==='vip'||S.idle) return x.i<S.pos?'done':x.i===S.pos?'cur':'open'; const li=lockIndex(); if(x.i>li) return 'locked'; if(x.i<S.pos) return 'done'; if(x.i===S.pos) return 'cur'; return 'open'; }
 function curStep(){ const L=steps(); return L[Math.min(S.pos,L.length-1)]; }
 function pct(){ const L=steps().filter(x=>!x.na); return Math.round(Math.min(S.pos,L.length)/L.length*100); }
 function dateStr(add){ const d=new Date(); d.setDate(d.getDate()+add); return d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'}); }
 function editsLeft(k){ const used=(S.hw[k]||0)-1; return Math.max(0,TARIFFS[S.tariff].edits-used); }
 const editsWord=tf=>tf.edits>=99?'сколько угодно':tf.edits===1?'один раз':'два раза';
-const typeMeta=x=> x.type==='video'?`${ico('play')}видео · ${x.d} мин`: x.type==='audio'?`${ico('play')}подкаст · ${x.d} мин`: x.type==='task'?`${ico('pen')}задание`: x.type==='guide'?`${ico('book')}гайд · ${x.d} мин`:`${ico('text')}текст · ${x.d} мин`;
+const typeWord=x=> x.type==='video'?'видео': x.type==='audio'?'подкаст': x.type==='task'?'задание': x.type==='guide'?'гайд':'текст';
+const typeMeta=x=> `${ico(x.type==='task'?'pen':x.type==='video'||x.type==='audio'?'play':x.type==='guide'?'book':'text')}${typeWord(x)}${x.d?' · '+x.d+' мин':''}`;
 
 /* ---------- экраны ---------- */
 function screenAnketa(){
@@ -440,42 +452,49 @@ function screenAnketa(){
 }
 
 function screenHome(){
-  const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const L=steps(); const cur=curStep(); const total=L.filter(x=>!x.na).length;
+  const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const L=steps(); const cur=curStep(); const total=L.filter(x=>!x.na).length; const done=Math.min(S.pos,total);
   let html=`
   <div class="band tall" ${bg(GIMG[cur.g]||'a')}><span class="big">${String(cur.i+1).padStart(2,'0')}</span>
     <div class="kicker"><span class="badge">Твой следующий шаг</span><span class="meta">шаг ${cur.i+1} из ${total}</span></div>
-    <h1>${cur.t}</h1>${cur.s?`<p>${cur.s}.</p>`:''}
+    <h1>${cur.t}</h1><p>${cur.r}.</p>
     <button class="btn" data-open-step="${cur.i}">${cur.type==='task'?ico('pen'):ico('play')} ${cur.type==='task'?'Сдать задание':cur.type==='text'||cur.type==='guide'?'Читать':'Смотреть'}${cur.d?' · '+cur.d+' мин':''}</button>
   </div>
-  <div><div class="row" style="margin-bottom:8px"><span class="meta">Обучение пройдено на ${pct()}%</span><span class="meta">доступ до ${dateStr(tf.days+(S.idle?14:0))}</span></div><div class="line"><i style="width:${pct()}%"></i></div></div>
-  <div class="from"><span class="hand">Майя</span><p>${t.from}</p></div>
+  <div class="goal"><span class="badge">Твоя цель на интенсиве</span><span class="t">${t.goal}</span><span class="s">${t.chain}</span></div>
+  <div><div class="row" style="margin-bottom:8px"><span class="meta">Пройдено ${done} из ${total} шагов · ${pct()}%</span><span class="meta">доступ до ${dateStr(tf.days+(S.idle?14:0))}</span></div><div class="line"><i style="width:${pct()}%"></i></div></div>
+  <div class="from"><span class="hand">Майя</span><p>${t.from} Следующий шаг открывается сам, когда сдашь задание.</p></div>
   <div class="path">`;
   let g='';
   for(const x of L){
-    if(x.g!==g){ g=x.g; html+=`<div class="gcap">${g}${x.na?' · в тарифе Рост и доход':''}</div>`; }
+    if(x.g!==g){ g=x.g; html+=`<div class="gcap"><span class="gk">${g}${x.na?' · в тарифе Рост и доход':''}</span><span class="gp">${GPROMISE[g]}</span></div>`; }
     const st=stateOf(x);
     const stt = st==='na'?micon('close')+'в тарифе выше': st==='locked'?micon('close')+'пока закрыт': st==='done'?ico('check')+'сделано': st==='cur'?ico('check')+'ты здесь': ico('check')+'можно';
-    const meta = st==='locked'? (x.hw?`${ico('lock')}откроется после задания выше`:`${ico('lock')}откроется после задания выше`) : typeMeta(x);
-    html+=`<button class="srow ${st}" data-open-step="${x.i}"><span class="n">${x.i+1}</span><span><div class="t">${x.t}</div><div class="m">${meta}${x.hw?` · ${ico('lock')}открывает следующие шаги`:''}</div></span><span class="st">${stt}</span></button>`;
+    const meta = st==='locked'?`${ico('lock')}откроется после задания выше`:typeMeta(x);
+    html+=`<button class="srow ${st}" data-open-step="${x.i}"><span class="n">${x.i+1}</span><span><div class="t">${x.t}</div><div class="r">${x.r}</div><div class="m">${meta}${x.hw?` · ${ico('lock')}открывает следующие шаги`:''}</div></span><span class="st">${stt}</span></button>`;
   }
-  html+=`</div>`;
+  html+=`</div>
+  <div class="support"><span><div class="t">Застряла или что-то не работает?</div><div class="s">Поддержка отвечает в будни с 10:00 до 19:00 по Москве</div></span><button class="btn ghost">${ico('chat')} Написать</button></div>`;
   return html;
 }
 
 function screenStep(){
   const L=steps(); const x=L[S.step]||L[0]; const t=TRACKS[S.track], tf=TARIFFS[S.tariff]; const st=stateOf(x); const total=L.filter(y=>!y.na).length;
-  const prev=S.step>0, next=S.step<L.length-1;
   let html=`<div class="lnav"><button class="btn quiet" data-screen="home">← Все шаги</button><span class="meta">шаг ${x.i+1} из ${total}</span></div>
-  <div><div class="badge" style="margin-bottom:8px">${x.g}</div><h1 style="font-size:23px">${x.t}</h1>${x.s?`<p style="margin:8px 0 0;max-width:50ch">${x.s}.</p>`:''}</div>`;
+  <div><div class="badge" style="margin-bottom:8px">${x.g}</div><h1 style="font-size:23px">${x.t}</h1></div>
+  <div class="facts"><div class="fact"><span class="k">Формат</span><span class="v">${typeWord(x)}${x.d?' · '+x.d+' мин':''}</span></div><div class="fact"><span class="k">Что сделаешь</span><span class="v">${x.r}</span></div><div class="fact"><span class="k">Задание</span><span class="v">${x.hw?'да, с замком':x.file?'да':'нет'}</span></div></div>`;
   if(st==='na'){ html+=`<div class="card key"><span class="badge">Этого шага нет в твоём тарифе</span><h3>Он есть в тарифе <em>Рост и доход</em></h3><div>Там шесть шагов о том, как блог приносит деньги: что продавать, оффер, бесплатный урок, воронка, бот, прогрев. Доплата 2.000 ₽, в любой момент.</div><div><button class="btn">Доплатить 2.000 ₽</button></div></div>`; return html+pager(); }
   if(st==='locked'){ const li=lockIndex(); html+=`<div class="card key"><span class="badge">${ico('lock','sm')} Пока закрыт</span><h3>Что сделать, чтобы открыть</h3><div>Сдай задание «${HW[L[li].hw]}», это шаг ${li+1}. Шаги идут по порядку, чтобы система собралась правильно.</div><div><button class="btn ghost" data-open-step="${li}">Перейти к шагу ${li+1}</button></div></div>`; return html+pager(); }
+  html+=`<div class="why"><span class="hand">Майя</span><p>${x.why}</p></div>`;
   if(x.type==='video'||x.type==='audio') html+=`<div class="video"><button class="playbtn">${ico('play')} Включить${x.type==='audio'?' подкаст':' урок'} · ${x.d} мин</button><span class="wm">${S.nick} · защищено</span></div>`;
-  if(x.type==='text'||x.type==='guide') html+=`<div class="textbox"><span class="badge">${ico('text','sm')} ${x.type==='guide'?'Гайд':'Текст шага'} · ${x.d} мин</span><p>Здесь будет короткий текст с картинками: что сделать, по шагам. ${x.quick?'Скопируй промпт ниже, вставь в Claude, и он опишет твою аудиторию по твоей анкете.':'Ниже промпт, который нужно скопировать в Claude.'}</p>${x.mats.some(m=>m.ic==='Промпт')?`<div class="prompt">Ты — мой ассистент по блогу. Прочитай файлы в проекте: распаковку, анализ аудитории, стиль речи. Ответь…</div><button class="btn ghost copy">Скопировать промпт</button>`:''}</div>`;
+  html+=`<div><div class="divider">${x.type==='video'||x.type==='audio'?'Что сделать после урока':'Что сделать, по порядку'}</div><div class="guide">${x.how.map((h,i)=>{
+     const needShot = (x.type==='text'||x.type==='guide') && i===x.how.length-1 && x.i<6;
+     const needPrompt = x.mats.some(m=>m.ic==='Промпт') && /промпт/i.test(h);
+     return `<div class="gstep"><span class="gn">${i+1}</span><span><div class="gt">${h}</div>${needPrompt?`<div class="prompt">Ты — мой ассистент по блогу. Прочитай файлы в проекте: распаковку, аудиторию, стиль речи. Ответь на запрос ниже моим голосом…</div><button class="btn ghost copy">Скопировать промпт</button>`:''}${needShot?`<div class="shot"><span>картинка: куда нажать</span></div>`:''}</span></div>`;}).join('')}</div></div>
+  <div class="donecheck"><span class="badge">${ico('check','sm')} Как понять, что получилось</span><div style="font-family:var(--serif);font-size:15.5px;color:var(--ink)">${x.check}</div></div>`;
   if(x.mats&&x.mats.length){
     const MI={'PDF':['file','PDF'],'Промпт':['spark','промпт'],'Чек':['check','чек-лист'],'Презент.':['layers','презентация'],'Пример':['book','пример'],'Табл.':['grid','таблица'],'Шаблон':['file','шаблон'],'Гайд':['book','гайд'],'Аудио':['play','аудио']};
     html+=`<div class="matsbox"><span class="badge">${ico('file','sm')} Файлы к шагу</span><div class="mats">${x.mats.map(m=>{const mi=MI[m.ic]||['file',m.ic.toLowerCase()]; return `<a class="mat" href="#"><span class="ic">${ico(mi[0])}</span><span><div class="t">${m.t}</div><div class="s">${mi[1]}${m.s?' · '+m.s:''}</div></span><span class="a">${ico('arrow')}</span></a>`;}).join('')}</div></div>`;
   }
-  if(x.skill) html+=`<div class="card"><span class="badge">${ico('spark','sm')} Скилл к шагу</span><h3 style="font-size:16px">${x.skill}</h3><div>После урока установи его одной командой, и Claude будет делать это за тебя.</div><div><button class="btn ghost">Установить скилл</button></div></div>`;
+  if(x.skill) html+=`<div class="card"><span class="badge">${ico('spark','sm')} Скилл к шагу</span><h3 style="font-size:16px">${x.skill}</h3><div>Установи одной командой, и Claude будет делать это за тебя. Нужен компьютер.</div><div><button class="btn ghost">Установить скилл</button></div></div>`;
   const hwName=x.hw?HW[x.hw]:x.file;
   if(hwName){
     const k=x.hw, submitted=k&&has(k), left=k?editsLeft(k):0;
@@ -491,6 +510,7 @@ function screenStep(){
     }
     html+=`</div>`;
   }
+  html+=`<div class="support"><span><div class="t">Что-то не получается на этом шаге?</div><div class="s">Напиши, ответим в будни с 10:00 до 19:00</div></span><button class="btn ghost">${ico('chat')} Написать</button></div>`;
   return html+pager();
   function pager(){
     const p=S.step>0?L[S.step-1]:null, n=S.step<L.length-1?L[S.step+1]:null;
@@ -500,7 +520,7 @@ function screenStep(){
 
 function screenFiles(){
   const tf=TARIFFS[S.tariff];
-  const rows=[['Анкета при входе','сдано · '+dateStr(0),true],['Распаковка',has('unpack')?'сдано':'ждёт · шаг 2',has('unpack')],['Кто твоя аудитория',has('ca')?'сдано':'ждёт · шаг 3',has('ca')],['Tone of Voice','ждёт · шаг 4',false],['Ссылка на профиль','ждёт · шаг 7',false],['Ролики','ждёт',false]];
+  const rows=[['Анкета при входе','сдано · '+dateStr(0),true],['Распаковка',has('unpack')?'сдано':'ждёт · шаг 2',has('unpack')],['Кто твоя аудитория',has('ca')?'сдано':'ждёт · шаг 3',has('ca')],['Tone of Voice','ждёт · шаг 4',false],['Ссылка на профиль','ждёт',false],['Ролики','ждёт',false]];
   if(tf.money) rows.push(['Что продаёшь',has('product')?'сдано':'ждёт',has('product')],['Оффер',has('offer')?'сдано':'ждёт',has('offer')],['План бесплатного урока',has('selling')?'сдано':'ждёт',has('selling')],['Ссылка на бота','ждёт',false],['План на месяц','ждёт',false]);
   const n=rows.filter(r=>r[2]).length;
   return `<div class="band" ${bg('m')}><span class="big">${String(n).padStart(2,'0')}</span><div class="kicker"><span class="badge">Мои файлы</span><span class="meta">из ${rows.length}</span></div><h1>Здесь лежит всё, <em>что ты сдала</em></h1><p>В конце Claude возьмёт эти файлы и настроит все скиллы под тебя. Папка останется у тебя навсегда.</p></div>
@@ -531,8 +551,9 @@ function screenProfile(){
     <div class="item"><span class="t">Поменять задание можно</span><span class="st">${tf.edits>=99?'без ограничений':tf.edits===1?'один раз':'два раза'}</span></div>
   </div>
   <div class="row">${S.tariff!=='vip'?`<button class="btn ghost">Перейти на тариф выше</button>`:''}<button class="btn quiet">Добавить кабинет на экран телефона</button></div>
-  <div class="how"><span class="badge">Как здесь всё работает</span><div class="how-steps"><span>${ico('play')}<span><b>1. Смотришь урок</b>10–15 минут</span></span><span>${ico('spark')}<span><b>2. Повторяешь в Claude</b>то же самое, что на экране</span></span><span>${ico('pen')}<span><b>3. Загружаешь результат</b>в задании к шагу</span></span><span>${ico('unlock')}<span><b>4. Открываются следующие шаги</b>сразу, без проверки</span></span></div></div>
-  <div class="note">Следующие шаги открывают пять заданий: распаковка, аудитория, что продаёшь, оффер, план бесплатного урока. Если 14 дней ничего не сдаёшь, всё откроется само, а доступ продлится на 2 недели.</div>
+  <div class="how"><span class="badge">Как здесь всё работает</span><div class="how-steps"><span>${ico('play')}<span><b>1. Открываешь шаг</b>видео или текст на 5–15 минут</span></span><span>${ico('spark')}<span><b>2. Делаешь по порядку</b>в каждом шаге написано, что нажать</span></span><span>${ico('pen')}<span><b>3. Загружаешь результат</b>если в шаге есть задание</span></span><span>${ico('unlock')}<span><b>4. Следующий шаг открывается сам</b>без проверки, сразу</span></span></div></div>
+  <div class="note">Пять заданий открывают следующие шаги: распаковка, аудитория, что продаёшь, оффер, план бесплатного урока. Если 14 дней ничего не сдаёшь, всё откроется само, а доступ продлится на 2 недели.</div>
+  <div class="support"><span><div class="t">Поддержка</div><div class="s">Поможем с доступом и кабинетом. В будни с 10:00 до 19:00 по Москве</div></span><button class="btn ghost">${ico('chat')} Написать</button></div>
   <div class="card"><label class="check"><input type="checkbox"><span style="font-size:13px">Можно использовать мой результат как кейс с моим ником. Можно отозвать в любой момент.</span></label></div>`;
 }
 
@@ -561,10 +582,10 @@ document.addEventListener('click',e=>{
   if(b=q('[data-screen]')){S.screen=b.dataset.screen; render(); return;}
   if(b=q('[data-go]')){S.screen=b.dataset.go; render(); return;}
   if(b=q('[data-open-step]')){S.step=+b.dataset.openStep; S.screen='step'; render(); return;}
-  if(b=q('[data-next]')){const n=+b.dataset.next; const L=steps(); if(stateOf(L[n])!=='locked'&&stateOf(L[n])!=='na'){ if(S.pos<n) S.pos=n; } S.step=n; S.screen='step'; render(); return;}
+  if(b=q('[data-next]')){const n=+b.dataset.next; const L=steps(); const stt=stateOf(L[n]); if(stt!=='locked'&&stt!=='na'&&S.pos<n) S.pos=n; S.step=n; S.screen='step'; render(); return;}
   if(b=q('[data-edit]')){ if(b.disabled) return; const k=b.dataset.edit; S.hw[k]=(S.hw[k]||1)+1; render(); return;}
-  if(b=q('#submitHw')){ if(b.disabled) return; const k=b.dataset.hw; if(k) submitHw(k); else { const L=steps(); if(S.pos<=S.step) S.pos=S.step+1; } render(); return;}
-  if(b=q('a.mat')||q('a.scard')){ e.preventDefault(); return; }
+  if(b=q('#submitHw')){ if(b.disabled) return; const k=b.dataset.hw; if(k) submitHw(k); else if(S.pos<=S.step) S.pos=S.step+1; render(); return;}
+  if(q('a.mat')||q('a.scard')){ e.preventDefault(); return; }
 });
 document.addEventListener('change',e=>{
   const r=e.target.closest('[data-set-track]'); if(r){S.track=r.dataset.setTrack; render(); return;}
